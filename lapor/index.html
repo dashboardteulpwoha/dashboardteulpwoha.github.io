@@ -99,7 +99,8 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
   <label>Nama petugas vendor</label><input id="ptgv" placeholder="nama lengkap">
   <div id="wMeter"><label>Nomor meter baru</label><input id="meterBaru" inputmode="numeric" maxlength="25" placeholder="nomor meter yang dipasang">
    <button type="button" class="minta" id="bMinta">Minta token prepaid</button><div id="psMinta" class="ps" style="color:var(--navy2)"></div></div>
-  <label>Foto eviden setelah tindak lanjut</label><div class="fotos" id="fotoTL"></div>
+  <div id="infoTok" class="pk off" style="display:none;font-size:14px">📸 <b>Foto eviden &amp; kirim tindak lanjut muncul setelah token prepaid terbit.</b><br>Isi nomor meter baru → tekan <b>Minta token prepaid</b> → setelah ULP memproses, buka lagi halaman ini (🔄 Perbarui di daftar), masukkan token ke meter, lalu foto meter sebagai eviden.</div>
+  <div id="wFotoTL"><label>Foto eviden setelah tindak lanjut</label><div class="fotos" id="fotoTL"></div></div>
   <label>Lokasi GPS</label><div class="gps"><button type="button" id="bGpsTL">📍 Ambil lokasi</button><div id="tGpsTL">opsional</div></div>
   <label>Keterangan</label><textarea id="ketTL" maxlength="500" placeholder="mis. meter lama rusak terbakar, sudah diganti & token dimasukkan"></textarea>
  </div>
@@ -157,7 +158,7 @@ const uidBaru=()=>Date.now().toString(36)+'-'+Math.random().toString(36).slice(2
 if(CFG.repo)cfgSimpan('repo',CFG.repo);
 /* ---------- navigasi ---------- */
 const JUDUL={vHome:['⚡ Lapor SR-APP','ULP Woha • bisa dipakai tanpa sinyal'],vLapor:['Lapor gangguan','isi lengkap lalu tekan Kirim'],vDaftar:['Belum tindak lanjut','ganti meter • token prepaid'],vTL:['Tindak lanjut','isi setelah pekerjaan selesai']};
-function buka(v,tanpaRiwayat){document.querySelectorAll('main section').forEach(x=>x.classList.toggle('aktif',x.id==v));$('barLapor').classList.toggle('aktif',v=='vLapor');$('barTL').classList.toggle('aktif',v=='vTL'&&!(TL&&TL.tl));
+function buka(v,tanpaRiwayat){document.querySelectorAll('main section').forEach(x=>x.classList.toggle('aktif',x.id==v));$('barLapor').classList.toggle('aktif',v=='vLapor');$('barTL').classList.toggle('aktif',false);
  $('judul').textContent=JUDUL[v][0];$('subjudul').textContent=JUDUL[v][1];$('bKembali').style.display=v=='vHome'?'none':'block';
  if(!tanpaRiwayat&&v!='vHome')history.pushState({v},'');if(v=='vHome')segarkan();window.scrollTo(0,0)}
 $('bKembali').onclick=()=>history.back();
@@ -300,8 +301,12 @@ async function bukaTL(id){const x=[...DAF.belum,...DAF.selesai].find(a=>a.id==id
  $('psMinta').textContent=x.minta&&!(x.token||[]).length&&!(x.dok||{}).token?`📨 Token sudah diminta ${wIso(x.minta.waktu)} untuk meter ${x.minta.meter}`:'';$('bMinta').textContent='Minta token prepaid';
  if(x.minta&&!$('meterBaru').value)$('meterBaru').value=x.minta.meter;
  const b2=$('bMinta2');if(b2)b2.onclick=()=>kirimMinta((x.tl||{}).meter_baru||(x.minta||{}).meter||'',b2,$('psMinta2'));
- buka('vTL');$('barTL').classList.toggle('aktif',!(x.tl||tunggu))}
-document.querySelectorAll('#hasil button').forEach(b=>b.onclick=()=>{TLS.hasil=b.dataset.v;document.querySelectorAll('#hasil button').forEach(x=>x.classList.toggle('on',x==b));$('wMeter').style.display=TLS.hasil=='perbaikan'?'none':'block'});
+ buka('vTL');$('barTL').classList.toggle('aktif',!(x.tl||tunggu));aturTL()}
+document.querySelectorAll('#hasil button').forEach(b=>b.onclick=()=>{TLS.hasil=b.dataset.v;document.querySelectorAll('#hasil button').forEach(x=>x.classList.toggle('on',x==b));$('wMeter').style.display=TLS.hasil=='perbaikan'?'none':'block';aturTL()});
+const tokenTerbit=x=>!!(x&&(((x.token||[]).length)||(x.dok||{}).token));
+function aturTL(){/* ganti meter: foto eviden & kirim TL baru tersedia setelah token terbit */
+ if(!TL||TL.tl)return;const tunggu=TLS.hasil=='ganti'&&!tokenTerbit(TL),boleh=TLS.hasil&&!tunggu,antri=$('fTL').style.display=='none';
+ $('infoTok').style.display=tunggu?'block':'none';$('wFotoTL').style.display=boleh?'block':'none';$('barTL').classList.toggle('aktif',!!boleh&&!antri)}
 function gambarFotoTL(){$('fotoTL').innerHTML=kotakFoto('tl','📸','Foto eviden setelah ganti meter / perbaikan','wajib',TLS.foto,'ambilFotoTL')}
 async function ambilFotoTL(k,inp){const f=inp.files&&inp.files[0];if(!f)return;
  try{TLS.foto=await kompres(f,[`TL ULP Woha • ${waktuTeks()} WITA • ${TL?TL.idpel:''}`,gpsTeks(TLS.gps)+($('meterBaru').value?` • meter baru ${$('meterBaru').value}`:'')]);gambarFotoTL()}catch(e){alert('Foto tidak terbaca, coba ambil ulang.')}}
@@ -319,7 +324,7 @@ $('bGpsTL').onclick=()=>ambilGps(g=>{TLS.gps=g},$('tGpsTL'),$('bGpsTL'));
 $('bKirimTL').onclick=async()=>{if(!TL)return;const it={tipe:'tl',uid:uidBaru(),id:TL.id,idpel:TL.idpel,dibuat:isoLokal(new Date()),hasil:TLS.hasil,vendor:$('vendor').value.trim(),
   petugas:$('ptgv').value.trim(),meter_baru:TLS.hasil=='ganti'?$('meterBaru').value.trim():'',ket:$('ketTL').value.trim(),lat:TLS.gps&&TLS.gps.lat,lng:TLS.gps&&TLS.gps.lng,foto:TLS.foto};
  const kurang=[];if(!it.hasil)kurang.push('hasil tindak lanjut');if(!it.vendor)kurang.push('nama PT vendor');if(!it.petugas)kurang.push('nama petugas vendor');
- if(it.hasil=='ganti'&&!it.meter_baru)kurang.push('nomor meter baru');if(!it.foto)kurang.push('foto eviden');
+ if(it.hasil=='ganti'&&!it.meter_baru)kurang.push('nomor meter baru');if(it.hasil=='ganti'&&!tokenTerbit(TL)){$('psTL').textContent='Token prepaid belum terbit. Minta token dulu.';return}if(!it.foto)kurang.push('foto eviden');
  if(kurang.length){$('psTL').textContent='Belum diisi: '+kurang.join(', ');return}
  simpanLS('sr_vendor',it.vendor);simpanLS('sr_ptgv',it.petugas);
  const ok=await simpanKirim(it,it.hasil=='ganti'?'TL ganti meter':'TL perbaikan',$('bKirimTL'),'Kirim tindak lanjut');if(ok===null){$('psTL').textContent='❌ Memori HP penuh.';return}
