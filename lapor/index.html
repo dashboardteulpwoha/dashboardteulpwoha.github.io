@@ -64,7 +64,7 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
  <button class="pasang" id="pasang">📲 Pasang aplikasi di layar HP</button>
  <div class="menu">
   <button class="mn" onclick="buka('vLapor')"><span class="ik" style="background:#FFF3E0">⚡</span><span><b>Lapor gangguan baru</b><small>Petugas piket: foto kWh meter, kabel SR, BA sambung langsung</small></span><i>›</i></button>
-  <button class="mn" onclick="bukaDaftar()"><span class="ik" style="background:#E3EEFA">🔧</span><span><b>Belum tindak lanjut<span class="n" id="nBelum" style="display:none"></span></b><small>Petugas vendor: ganti meter, nomor meter baru, foto eviden &amp; token prepaid</small></span><i>›</i></button>
+  <button class="mn" onclick="bukaDaftar()"><span class="ik" style="background:#E3EEFA">🔧</span><span><b>Belum tindak lanjut<span class="n" id="nBelum" style="display:none"></span></b><small>Petugas vendor: ganti meter, foto eviden &amp; token prepaid</small></span><i>›</i></button>
  </div>
  <div class="kt antri" id="kAntri"><h2>📤 Menunggu dikirim <span id="nAntri" class="tg tunggu"></span></h2>
   <div style="font-size:13px;color:#7A4B00">Tersimpan aman di HP, dikirim otomatis begitu ada sinyal.</div><div class="riw" id="lAntri"></div>
@@ -87,7 +87,7 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
 <div class="kt"><h2><b>5</b>Foto</h2><div class="fotos" id="fotos"></div></div>
 </section>
 <section id="vDaftar">
- <div class="tabs"><button id="tbBelum" class="on" onclick="tabD('belum')">Belum TL</button><button id="tbSelesai" onclick="tabD('selesai')">Sudah TL (14 hari)</button></div>
+ <div class="tabs"><button id="tbBelum" class="on" onclick="tabD('belum')">Belum selesai</button><button id="tbSelesai" onclick="tabD('selesai')">Selesai (14 hari)</button></div>
  <input class="cari2" id="cariD" placeholder="🔎 cari IDPEL, nama, alamat…" oninput="gambarDaftar()">
  <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--abu);margin:-2px 2px 10px"><span id="wDaftar"></span><button class="kl" style="color:var(--navy);border-color:var(--garis)" onclick="muatDaftar(true)">🔄 Perbarui</button></div>
  <div id="lDaftar"></div>
@@ -210,7 +210,7 @@ function pilihPlg(id){S.plg=HPLG.find(p=>p.idpel==id)||null;if(S.plg){$('idpel')
 /* ---------- status, antrean, riwayat ---------- */
 function sinyal(){const on=navigator.onLine;$('sinyal').className=on?'on':'off';$('sinyal').textContent=on?'● Online':'● Offline'}
 async function segarkan(){const A=await antriSemua(),r=(await cfgAmbil('riw'))||[],D=(await cfgAmbil('daftar'))||{belum:[]};
- const tlTunggu=new Set(A.filter(a=>a.tipe=='tl').map(a=>a.id)),nb=(D.belum||[]).filter(x=>!tlTunggu.has(x.id)).length;
+ const nb=(D.belum||[]).length;
  $('nBelum').style.display=nb?'inline-block':'none';$('nBelum').textContent=nb;
  $('kAntri').classList.toggle('ada',A.length>0);$('nAntri').textContent=A.length;
  $('lAntri').innerHTML=A.map(a=>`<div><b>${a.tipe=='tl'?'✅ TL ':''}${esc(a.idpel||'')}</b><span>${esc(a.tipe=='tl'?(a.hasil=='ganti'?'Ganti meter':'Perbaikan'):a.jenis)}</span><span class="tg ${a.galat?'galat':'tunggu'}">${a.galat?'⚠ '+esc(a.galat):waktuTeks(new Date(a.dibuat))}</span></div>`).join('');
@@ -257,11 +257,11 @@ const fotoUrl=(id,j)=>DAF&&DAF.base&&TOKEN?`${DAF.base}/foto/${id}/${j}.jpg?t=${
 let TOKEN=null;cfgAmbil('token').then(t=>TOKEN=t);
 async function gambarDaftar(){const A=await antriSemua(),tunggu=new Set(A.filter(a=>a.tipe=='tl').map(a=>a.id));
  if(!DAF){$('lDaftar').innerHTML='<div class="kt" style="text-align:center;color:#6B7280">Belum ada data. Buka saat ada sinyal.</div>';return}
- $('wDaftar').textContent='data '+DAF.waktu;$('tbBelum').textContent=`Belum TL (${DAF.belum.filter(x=>!tunggu.has(x.id)).length})`;
+ $('wDaftar').textContent='data '+DAF.waktu;$('tbBelum').textContent=`Belum selesai (${DAF.belum.length})`;
  const q=$('cariD').value.toLowerCase(),L=(TAB=='belum'?DAF.belum:DAF.selesai).filter(x=>!q||[x.idpel,(x.plg||{}).nama,(x.plg||{}).alamat,x.jenis,(x.plg||{}).nometer].join(' ').toLowerCase().includes(q));
  $('lDaftar').innerHTML=L.length?L.map(x=>{const p=x.plg||{},u=fotoUrl(x.id,'meter');return `<div class="it" onclick="bukaTL('${x.id}')">${u?`<img src="${u}" loading="lazy" onerror="this.outerHTML='<div class=ph>⚡</div>'">`:'<div class="ph">⚡</div>'}
   <div><b>${esc(p.nama||x.idpel)}</b><div>${esc(x.idpel)}${p.nometer&&p.nometer!=x.idpel?' • meter '+esc(p.nometer):''}</div><div class="al">${esc(p.alamat||x.unit)}</div>
-  <div class="tgs"><span class="tg galat">${esc(x.jenis)}</span><span class="tg biru">${wIso(x.waktu)}</span>${x.sl?'<span class="tg galat">🔌 SL</span>':''}${(x.token||[]).length?'<span class="tg ok">🔑 token ada</span>':''}${tunggu.has(x.id)?'<span class="tg tunggu">📥 TL menunggu kirim</span>':''}${x.tl?`<span class="tg ok">✅ ${esc(x.tl.vendor)}</span>`:''}</div></div></div>`}).join(''):`<div class="kt" style="text-align:center;color:#6B7280">${TAB=='belum'?'🎉 Tidak ada gangguan yang menunggu tindak lanjut.':'Belum ada tindak lanjut 14 hari terakhir.'}</div>`}
+  <div class="tgs"><span class="tg galat">${esc(x.jenis)}</span><span class="tg biru">${wIso(x.waktu)}</span>${x.sl?'<span class="tg galat">🔌 SL</span>':''}${(x.token||[]).length?'<span class="tg ok">🔑 token ada</span>':''}${tunggu.has(x.id)?'<span class="tg tunggu">📥 TL menunggu kirim</span>':''}${x.tl?`<span class="tg ok">✅ ${esc(x.tl.vendor)}</span>`:''}${x.tunggu_token?'<span class="tg galat">🔑 menunggu token</span>':''}</div></div></div>`}).join(''):`<div class="kt" style="text-align:center;color:#6B7280">${TAB=='belum'?'🎉 Tidak ada gangguan yang menunggu tindak lanjut / token.':'Belum ada tindak lanjut selesai 14 hari terakhir.'}</div>`}
 function salin(t){const ok=()=>{const b=event&&event.target;if(b){const o=b.textContent;b.textContent='✓';setTimeout(()=>b.textContent=o,1200)}};
  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,()=>{});else{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();ok()}}
 function htmlToken(T){if(!T||!T.length)return `<div class="tok"><h3>🔑 Token prepaid</h3><small>Belum ada di file Monitoring Permohonan Token. Token muncul di sini setelah proses ganti meter di AP2T dan file token diimport ke bot. Tekan 🔄 Perbarui di daftar untuk cek ulang.</small></div>`;
@@ -279,6 +279,7 @@ async function bukaTL(id){const x=[...DAF.belum,...DAF.selesai].find(a=>a.id==id
   ${lat!=null?`<div><span>Lokasi</span><a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">🧭 Navigasi ke lokasi ›</a></div>`:''}</div>
   ${navigator.onLine&&fotoUrl(x.id,'meter')?`<div class="gal">${(x.foto||[]).map(j=>`<img src="${fotoUrl(x.id,j)}" onclick="window.open(this.src)" onerror="this.remove()">`).join('')}</div>`:''}</div>
   <div class="kt" style="padding:4px 12px 12px">${htmlToken(x.token)}</div>
+  ${x.tunggu_token?'<div class="kt" style="background:#FDECEA;color:#8B1A1A;font-size:14px"><b>🔑 Menunggu token prepaid.</b> Meter sudah diganti, tetapi token belum terbit di Monitoring Permohonan Token. Pelanggan ini tetap di daftar <b>Belum selesai</b> sampai token muncul — cek lagi lewat 🔄 Perbarui, lalu masukkan token ke meter.</div>':''}
   ${x.tl?`<div class="kt"><h2>✅ Sudah ditindaklanjuti</h2><div class="inf"><div><span>Hasil</span><b>${x.tl.hasil=='ganti'?'Ganti meter':'Perbaikan tanpa ganti meter'}</b></div><div><span>PT vendor</span>${esc(x.tl.vendor)}</div><div><span>Petugas</span>${esc(x.tl.petugas)}</div>${x.tl.meter_baru?`<div><span>Meter baru</span><b>${esc(x.tl.meter_baru)}</b></div>`:''}<div><span>Waktu</span>${wIso(x.tl.waktu)}</div>${x.tl.ket?`<div><span>Keterangan</span>${esc(x.tl.ket)}</div>`:''}</div>${navigator.onLine&&fotoUrl(x.id,'tl')?`<div class="gal"><img src="${fotoUrl(x.id,'tl')}" onclick="window.open(this.src)" onerror="this.remove()"></div>`:''}</div>`
   :tunggu?'<div class="kt" style="background:#FFF3E0">📥 Tindak lanjut sudah diisi dan menunggu dikirim (belum ada sinyal).</div>':''}`;
  $('fTL').style.display=x.tl||tunggu?'none':'block';
