@@ -1,0 +1,1 @@
+{"name": "Lapor Gangguan SR-APP ULP Woha", "short_name": "Lapor SR-APP", "start_url": "./", "scope": "./", "display": "standalone", "background_color": "#0F2640", "theme_color": "#0F2640", "icons": [{"src": "ikon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]}
