@@ -13,7 +13,7 @@ async function cariBase(paksa){/* alamat server bot terbaru */
   if(url){url=url.replace(/\/+$/,'');await cfgSimpan('base',url);return url}}catch(e){}
  const b=await cfgAmbil('base');return b||(diGithub()?null:self.location.origin)}
 async function kirimSatu(base,token,it){if(!base)return 'net';
- try{const r=await fetch(base+(it.tipe==='tl'?'/api/lapor/tl':'/api/lapor'),{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':token},body:JSON.stringify(it)});
+ try{const r=await fetch(base+({tl:'/api/lapor/tl',minta:'/api/lapor/minta_token'}[it.tipe]||'/api/lapor'),{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':token},body:JSON.stringify(it)});
   if(r.status==401)return 'login';const j=await r.json().catch(()=>({}));if(r.ok&&j.ok)return 'ok';if(r.status>=500||r.status==429)return 'net';return j.pesan||('ditolak server ('+r.status+')')}catch(e){return 'net'}}
 async function tandaiRiw(uid,st){const r=(await cfgAmbil('riw'))||[];const x=r.find(a=>a.uid==uid);if(x){x.st=st;await cfgSimpan('riw',r)}}
 let SEDANG=false;
@@ -30,7 +30,7 @@ async function kirimAntrian(){if(SEDANG)return {terkirim:0,galat:'sibuk'};SEDANG
  }catch(e){galat='net'}finally{SEDANG=false}
  return {terkirim:n,galat}}
 
-const CACHE='lapor-sr-ebf652a1ed',ASET=['./','./manifest.json','./ikon.svg'];
+const CACHE='lapor-sr-1119f2cc24',ASET=['./','./manifest.json','./ikon.svg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASET)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('lapor-sr-')&&x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{const q=e.request,u=new URL(q.url);if(q.method!=='GET'||u.origin!==self.location.origin)return;
