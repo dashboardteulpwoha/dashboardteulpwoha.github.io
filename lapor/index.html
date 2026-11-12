@@ -6,11 +6,12 @@
 :root{--navy:#0F2640;--navy2:#1F4E78;--emas:#F2B134;--abu:#6B7280;--garis:#DDE3EC;--hijau:#2E7D32;--merah:#C62828;--oranye:#EF6C00;--bg:#EEF2F7}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:system-ui,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:#1E2A3A;padding-bottom:110px}
 header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 46px;position:relative}
-header h1{margin:0;font-size:20px}header p{margin:3px 0 0;color:#C9D6E8;font-size:13px}
+header h1{margin:0;font-size:20px;display:flex;align-items:center;gap:10px}header p{margin:3px 0 0;color:#C9D6E8;font-size:13px}
+#bKembali{display:none;border:0;background:rgba(255,255,255,.15);color:#fff;border-radius:10px;width:36px;height:36px;font-size:20px}
 .st{position:absolute;right:12px;top:calc(12px + env(safe-area-inset-top));display:flex;gap:6px;align-items:center}
 .on,.off{font-size:12px;font-weight:700;padding:5px 10px;border-radius:20px}.on{background:rgba(46,125,50,.25);color:#9BE7A6}.off{background:rgba(198,40,40,.3);color:#FFB4AB}
 .kl{color:#C9D6E8;font-size:12px;border:1px solid rgba(255,255,255,.3);padding:4px 9px;border-radius:20px;background:none}
-main{margin:-32px 12px 0;position:relative}
+main{margin:-32px 12px 0;position:relative}section{display:none}section.aktif{display:block}
 .kt{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(15,38,64,.06)}
 .kt h2{margin:0 0 12px;font-size:16px;display:flex;align-items:center;gap:10px}.kt h2 b{width:28px;height:28px;border-radius:50%;background:var(--navy);color:var(--emas);display:grid;place-items:center;font-size:14px}
 label{display:block;font-size:13px;font-weight:700;color:var(--abu);margin:12px 0 6px}label:first-of-type{margin-top:0}
@@ -18,45 +19,64 @@ input,textarea{width:100%;padding:14px;border:2px solid var(--garis);border-radi
 input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:vertical;min-height:80px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}.chips button{border:2px solid var(--garis);background:#fff;border-radius:22px;padding:10px 14px;font-size:14px;font-weight:600;color:#1E2A3A}
 .chips button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.cr{display:flex;gap:8px}.cr input{flex:1}.cr button{flex:none;border:0;border-radius:12px;background:var(--navy);color:#fff;font-weight:800;font-size:15px;padding:0 18px}
 .gps{display:flex;gap:10px;align-items:center}.gps button{flex:none;border:0;background:var(--navy);color:#fff;border-radius:12px;padding:14px 16px;font-weight:700;font-size:15px}
-.gps div{font-size:13px;color:var(--abu);line-height:1.4}.gps div b{color:#1E2A3A;font-size:14px}.gps a{color:var(--navy2)}
+.gps div{font-size:13px;color:var(--abu);line-height:1.4}.gps div b{color:#1E2A3A;font-size:14px}
 .kb{display:flex;align-items:center;gap:8px}.kb button{width:56px;height:56px;border:0;border-radius:14px;background:#E8EEF6;font-size:26px;font-weight:800;color:var(--navy)}
 .kb input{text-align:center;font-size:24px;font-weight:800}.kb span{font-weight:700;color:var(--abu)}
-.yt{display:grid;grid-template-columns:1fr 1fr;gap:8px}.yt button{padding:14px;border:2px solid var(--garis);border-radius:12px;background:#fff;font-size:15px;font-weight:700}
+.yt{display:grid;grid-template-columns:1fr 1fr;gap:8px}.yt button{padding:14px 8px;border:2px solid var(--garis);border-radius:12px;background:#fff;font-size:15px;font-weight:700}
 .yt button.on{border-color:var(--navy);background:var(--navy);color:#fff}
 .fotos{display:grid;gap:10px}.ft{position:relative;border:2px dashed #B9C4D3;border-radius:16px;min-height:120px;display:flex;align-items:center;gap:12px;padding:12px;background:#F8FAFD}
 .ft.isi{border-style:solid;border-color:var(--hijau);background:#F2FAF3}.ft .ik{font-size:34px;width:56px;text-align:center}.ft img{width:96px;height:96px;object-fit:cover;border-radius:12px;flex:none}
 .ft b{display:block;font-size:15px}.ft small{color:var(--abu);font-size:12px}.ft .wj{color:var(--merah);font-weight:700}.ft input{position:absolute;inset:0;opacity:0;width:100%;height:100%}
-.kirim{position:fixed;left:0;right:0;bottom:0;padding:12px 12px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 30%)}
-.kirim button{width:100%;padding:18px;border:0;border-radius:16px;background:var(--emas);color:var(--navy);font-size:18px;font-weight:800;box-shadow:0 8px 20px rgba(242,177,52,.4)}
-.kirim button:disabled{opacity:.6}.ps{font-size:13px;margin-top:8px;color:var(--merah);font-weight:600;text-align:center}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:12px 12px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 30%);display:none}.bar.aktif{display:block}
+.bar button{width:100%;padding:18px;border:0;border-radius:16px;background:var(--emas);color:var(--navy);font-size:18px;font-weight:800;box-shadow:0 8px 20px rgba(242,177,52,.4)}
+.bar button:disabled{opacity:.6}.ps{font-size:13px;margin-top:8px;color:var(--merah);font-weight:600;text-align:center}
 .layar{position:fixed;inset:0;background:var(--navy);color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:9}
 .layar .c{width:110px;height:110px;border-radius:50%;background:var(--hijau);display:grid;place-items:center;font-size:56px;margin-bottom:18px;animation:pop .4s}
 @keyframes pop{0%{transform:scale(.3)}80%{transform:scale(1.1)}100%{transform:scale(1)}}
-.layar button{margin-top:22px;padding:16px 28px;border:0;border-radius:14px;background:var(--emas);color:var(--navy);font-size:17px;font-weight:800}
-.layar p{color:#C9D6E8;max-width:340px}
+.layar button{margin-top:22px;padding:16px 28px;border:0;border-radius:14px;background:var(--emas);color:var(--navy);font-size:17px;font-weight:800}.layar p{color:#C9D6E8;max-width:340px}
 .masuk{background:linear-gradient(160deg,#0F2640,#1F4E78)}.masuk .k{background:#fff;color:#142F4E;border-radius:22px;padding:26px 22px;width:min(360px,90vw)}
-.masuk .k h2{margin:0 0 4px}.masuk .k p{color:var(--abu);margin:0 0 16px;font-size:14px}.masuk input{text-align:center;font-size:24px;letter-spacing:6px}.masuk .k button{width:100%;margin-top:14px}
+.masuk .k h2{margin:0 0 4px}.masuk .k p{color:var(--abu);margin:0 0 16px;font-size:14px}.masuk input{text-align:center;font-size:24px;letter-spacing:6px}
 .riw div{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid #EEF2F7;font-size:13px}.riw div:last-child{border:0}.riw span{color:var(--abu)}
-.tg{font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px;white-space:nowrap}.tg.ok{background:#E8F5E9;color:var(--hijau)}.tg.tunggu{background:#FFF3E0;color:var(--oranye)}.tg.galat{background:#FDECEA;color:var(--merah)}
-.antri{display:none;background:#FFF3E0;border:2px solid #FFCC80}.antri.ada{display:block}.antri .bt{display:flex;gap:8px;margin-top:10px}
-.antri .bt button{flex:1;padding:12px;border:0;border-radius:12px;font-weight:800;font-size:14px;background:var(--oranye);color:#fff}
+.tg{font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px;white-space:nowrap}.tg.ok{background:#E8F5E9;color:var(--hijau)}.tg.tunggu{background:#FFF3E0;color:var(--oranye)}.tg.galat{background:#FDECEA;color:var(--merah)}.tg.biru{background:#E3EEFA;color:var(--navy2)}
+.antri{display:none;background:#FFF3E0;border:2px solid #FFCC80}.antri.ada{display:block}.antri button{width:100%;margin-top:10px;padding:12px;border:0;border-radius:12px;font-weight:800;font-size:14px;background:var(--oranye);color:#fff}
+.pasang{display:none;margin:0 0 12px;width:100%;padding:12px;border:0;border-radius:12px;background:#E8EEF6;color:var(--navy);font-weight:700;font-size:14px}
 .pk{margin-top:10px;border-radius:14px;padding:12px;font-size:13px;line-height:1.5;background:#F5F8FC;border:1px solid var(--garis)}
 .pk.ok{background:#F2FAF3;border-color:#B7DFBB}.pk.off{background:#FFF8E1;border-color:#FFE08A;color:#7A5B00}.pk.jauh{background:#FDECEA;color:var(--merah);margin-top:6px;padding:6px 10px;border:0;font-weight:700}
 .pk .pj{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:15px}.pk button{margin-top:8px;width:100%;padding:10px;border:0;border-radius:10px;background:var(--navy);color:#fff;font-weight:700}
-.pasang{display:none;margin:0 0 12px;width:100%;padding:12px;border:0;border-radius:12px;background:#E8EEF6;color:var(--navy);font-weight:700;font-size:14px}
+.menu{display:grid;gap:12px;margin-bottom:12px}.mn{display:flex;align-items:center;gap:14px;background:#fff;border-radius:20px;padding:18px;border:0;text-align:left;box-shadow:0 4px 14px rgba(15,38,64,.08);width:100%;color:#1E2A3A}
+.mn .ik{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-size:30px;flex:none}.mn b{display:block;font-size:17px}.mn small{color:var(--abu);font-size:13px}.mn i{margin-left:auto;font-style:normal;font-size:26px;color:#9AA5B1}
+.mn .n{display:inline-block;margin-left:6px;background:var(--merah);color:#fff;font-size:13px;border-radius:12px;padding:1px 9px;vertical-align:middle}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#fff;border-radius:14px;padding:5px;margin-bottom:10px}.tabs button{border:0;border-radius:10px;padding:11px;font-weight:800;font-size:14px;background:none;color:var(--abu)}.tabs button.on{background:var(--navy);color:#fff}
+.it{background:#fff;border-radius:16px;padding:12px;margin-bottom:10px;display:flex;gap:12px;box-shadow:0 2px 8px rgba(15,38,64,.05)}.it img,.it .ph{width:72px;height:72px;border-radius:12px;object-fit:cover;flex:none;background:#E8EEF6;display:grid;place-items:center;font-size:28px}
+.it>div{flex:1;min-width:0;font-size:13px;line-height:1.45}.it b{font-size:15px}.it .al{color:var(--abu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.it .tgs{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.tok{background:#0F2640;color:#fff;border-radius:16px;padding:14px;margin-top:8px}.tok h3{margin:0 0 6px;font-size:15px;color:var(--emas)}.tok small{color:#C9D6E8}
+.tk{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border-radius:12px;padding:10px;margin-top:8px}.tk div{flex:1}.tk span{font-size:11px;color:#C9D6E8;font-weight:700}
+.tk code{display:block;font-size:19px;font-weight:800;letter-spacing:1px;color:#fff;font-family:ui-monospace,Consolas,monospace;word-break:break-all}.tk button{border:0;border-radius:10px;background:var(--emas);color:var(--navy);font-weight:800;padding:10px 12px}
+.inf{font-size:14px;line-height:1.55}.inf div{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid #EEF2F7}.inf div span{width:110px;flex:none;color:var(--abu);font-size:13px}.inf a{color:var(--navy2);font-weight:700}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.gal img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#E8EEF6}
+.cari2{margin-bottom:10px}
 </style></head><body>
-<header><h1>⚡ Lapor Gangguan SR-APP</h1><p>ULP Woha • bisa dipakai tanpa sinyal</p><div class="st"><span id="sinyal" class="on">● Online</span><button class="kl" id="bKeluar">Keluar</button></div></header>
+<header><h1><button id="bKembali">‹</button><span id="judul">⚡ Lapor SR-APP</span></h1><p id="subjudul">ULP Woha • bisa dipakai tanpa sinyal</p><div class="st"><span id="sinyal" class="on">● Online</span><button class="kl" id="bKeluar">Keluar</button></div></header>
 <main>
-<button class="pasang" id="pasang">📲 Pasang aplikasi di layar HP</button>
-<div class="kt antri" id="kAntri"><h2>📤 Menunggu dikirim <span id="nAntri" class="tg tunggu"></span></h2>
- <div style="font-size:13px;color:#7A4B00">Laporan tersimpan aman di HP dan dikirim otomatis begitu ada sinyal.</div><div class="riw" id="lAntri"></div>
- <div class="bt"><button id="bKirimAntri">🔄 Kirim sekarang</button></div><div class="ps" id="psAntri"></div></div>
+<section id="vHome" class="aktif">
+ <button class="pasang" id="pasang">📲 Pasang aplikasi di layar HP</button>
+ <div class="menu">
+  <button class="mn" onclick="buka('vLapor')"><span class="ik" style="background:#FFF3E0">⚡</span><span><b>Lapor gangguan baru</b><small>Petugas piket: foto kWh meter, kabel SR, BA sambung langsung</small></span><i>›</i></button>
+  <button class="mn" onclick="bukaDaftar()"><span class="ik" style="background:#E3EEFA">🔧</span><span><b>Belum tindak lanjut<span class="n" id="nBelum" style="display:none"></span></b><small>Petugas vendor: ganti meter, nomor meter baru, foto eviden &amp; token prepaid</small></span><i>›</i></button>
+ </div>
+ <div class="kt antri" id="kAntri"><h2>📤 Menunggu dikirim <span id="nAntri" class="tg tunggu"></span></h2>
+  <div style="font-size:13px;color:#7A4B00">Tersimpan aman di HP, dikirim otomatis begitu ada sinyal.</div><div class="riw" id="lAntri"></div>
+  <button id="bKirimAntri">🔄 Kirim sekarang</button><div class="ps" id="psAntri"></div></div>
+ <div class="kt"><h2>🕘 Riwayat dari HP ini</h2><div class="riw" id="riw"></div></div>
+</section>
+<section id="vLapor">
 <div class="kt"><h2><b>1</b>Petugas</h2>
  <label>Kantor unit</label><input id="unit" list="dUnit" placeholder="pilih / ketik kantor unit"><datalist id="dUnit"><option value="ULP Woha"></datalist>
  <label>Nama petugas piket</label><input id="petugas" placeholder="nama lengkap" autocomplete="name"></div>
 <div class="kt"><h2><b>2</b>Pelanggan &amp; lokasi</h2>
- <label>IDPEL / No meter</label><input id="idpel" inputmode="numeric" placeholder="contoh 443301120672" maxlength="25"><div id="plg"></div>
+ <label>IDPEL / No meter</label><div class="cr"><input id="idpel" inputmode="numeric" placeholder="contoh 443301120672" maxlength="25"><button type="button" id="bCari">🔍 Cari</button></div><div id="plg"></div>
  <label>Lokasi GPS (tetap bisa tanpa internet)</label><div class="gps"><button type="button" id="bGps">📍 Ambil lokasi</button><div id="tGps">Tekan tombol saat berada di lokasi pelanggan.</div></div></div>
 <div class="kt"><h2><b>3</b>Gangguan</h2>
  <label>Jenis gangguan</label><div class="chips" id="jenis"><button type="button">kWh meter mati / rusak</button><button type="button">MCB trip / rusak</button><button type="button">Kabel SR putus / rusak</button><button type="button">Sambungan / konektor terbakar</button><button type="button">Box APP / segel rusak</button><button type="button">Tegangan tidak normal</button><button type="button">Lainnya</button></div>
@@ -65,13 +85,31 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
  <label>Panjang kabel SR yang dipakai</label><div class="kb"><button type="button" onclick="ubahKabel(-1)">−</button><input id="kabel" type="number" inputmode="decimal" min="0" step="1" value="0"><span>meter</span><button type="button" onclick="ubahKabel(1)">+</button></div>
  <label>Sambung langsung?</label><div class="yt" id="sl"><button type="button" data-v="0" class="on">Tidak</button><button type="button" data-v="1">Ya</button></div></div>
 <div class="kt"><h2><b>5</b>Foto</h2><div class="fotos" id="fotos"></div></div>
-<div class="kt"><h2>🕘 Riwayat dari HP ini</h2><div class="riw" id="riw"></div></div>
+</section>
+<section id="vDaftar">
+ <div class="tabs"><button id="tbBelum" class="on" onclick="tabD('belum')">Belum TL</button><button id="tbSelesai" onclick="tabD('selesai')">Sudah TL (14 hari)</button></div>
+ <input class="cari2" id="cariD" placeholder="🔎 cari IDPEL, nama, alamat…" oninput="gambarDaftar()">
+ <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--abu);margin:-2px 2px 10px"><span id="wDaftar"></span><button class="kl" style="color:var(--navy);border-color:var(--garis)" onclick="muatDaftar(true)">🔄 Perbarui</button></div>
+ <div id="lDaftar"></div>
+</section>
+<section id="vTL"><div id="dTL"></div>
+ <div class="kt" id="fTL"><h2>✅ Laporan tindak lanjut</h2>
+  <label>Hasil tindak lanjut</label><div class="yt" id="hasil"><button type="button" data-v="ganti">🔁 Ganti meter</button><button type="button" data-v="perbaikan">🔧 Perbaikan saja</button></div>
+  <label>Nama PT vendor</label><input id="vendor" list="dVendor" placeholder="pilih / ketik nama PT"><datalist id="dVendor"></datalist>
+  <label>Nama petugas vendor</label><input id="ptgv" placeholder="nama lengkap">
+  <div id="wMeter"><label>Nomor meter baru</label><input id="meterBaru" inputmode="numeric" maxlength="25" placeholder="nomor meter yang dipasang"></div>
+  <label>Foto eviden setelah tindak lanjut</label><div class="fotos" id="fotoTL"></div>
+  <label>Lokasi GPS</label><div class="gps"><button type="button" id="bGpsTL">📍 Ambil lokasi</button><div id="tGpsTL">opsional</div></div>
+  <label>Keterangan</label><textarea id="ketTL" maxlength="500" placeholder="mis. meter lama rusak terbakar, sudah diganti & token dimasukkan"></textarea>
+ </div>
+</section>
 </main>
-<div class="kirim"><button id="bKirim">Kirim laporan</button><div class="ps" id="ps"></div></div>
-<div class="layar" id="sukses"><div class="c" id="sIk">✓</div><h2 style="margin:0" id="sJ">Laporan terkirim</h2><p id="sk"></p><button onclick="baru()">+ Lapor gangguan lain</button></div>
+<div class="bar" id="barLapor"><button id="bKirim">Kirim laporan</button><div class="ps" id="ps"></div></div>
+<div class="bar" id="barTL"><button id="bKirimTL">Kirim tindak lanjut</button><div class="ps" id="psTL"></div></div>
+<div class="layar" id="sukses"><div class="c" id="sIk">✓</div><h2 style="margin:0" id="sJ">Laporan terkirim</h2><p id="sk"></p><button id="sBtn">Selesai</button></div>
 <div class="layar masuk" id="lMasuk"><div class="k"><div style="font-size:42px">⚡</div><h2>Lapor Gangguan SR-APP</h2><p>ULP Woha • masukkan PIN petugas<br><small>(cukup sekali, perlu internet)</small></p>
  <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="••••">
- <button id="bMasuk" style="padding:16px;border:0;border-radius:14px;background:var(--emas);color:var(--navy);font-size:17px;font-weight:800">Masuk</button><div class="ps" id="psMasuk"></div></div></div>
+ <button id="bMasuk" style="width:100%;margin-top:14px;padding:16px;border:0;border-radius:14px;background:var(--emas);color:var(--navy);font-size:17px;font-weight:800">Masuk</button><div class="ps" id="psMasuk"></div></div></div>
 <script>
 const CFG={repo:'dashboardteulpwoha/dashboardteulpwoha.github.io'};
 
@@ -89,7 +127,7 @@ async function cariBase(paksa){/* alamat server bot terbaru */
   if(url){url=url.replace(/\/+$/,'');await cfgSimpan('base',url);return url}}catch(e){}
  const b=await cfgAmbil('base');return b||(diGithub()?null:self.location.origin)}
 async function kirimSatu(base,token,it){if(!base)return 'net';
- try{const r=await fetch(base+'/api/lapor',{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':token},body:JSON.stringify(it)});
+ try{const r=await fetch(base+(it.tipe==='tl'?'/api/lapor/tl':'/api/lapor'),{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':token},body:JSON.stringify(it)});
   if(r.status==401)return 'login';const j=await r.json().catch(()=>({}));if(r.ok&&j.ok)return 'ok';if(r.status>=500||r.status==429)return 'net';return j.pesan||('ditolak server ('+r.status+')')}catch(e){return 'net'}}
 async function tandaiRiw(uid,st){const r=(await cfgAmbil('riw'))||[];const x=r.find(a=>a.uid==uid);if(x){x.st=st;await cfgSimpan('riw',r)}}
 let SEDANG=false;
@@ -107,100 +145,179 @@ async function kirimAntrian(){if(SEDANG)return {terkirim:0,galat:'sibuk'};SEDANG
  return {terkirim:n,galat}}
 
 const FOTO=[['meter','📟','Foto kWh meter gangguan','wajib'],['kabel','🧵','Foto penggunaan kabel SR','wajib'],['ba','📄','Foto berita acara sambung langsung','wajib bila sambung langsung']];
-const $=i=>document.getElementById(i),S={jenis:'',sl:false,gps:null,foto:{}};
+const $=i=>document.getElementById(i),S={jenis:'',sl:false,gps:null,foto:{},plg:null};
 const z=n=>String(n).padStart(2,'0'),isoLokal=d=>`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}:${z(d.getSeconds())}`;
 const waktuTeks=(d=new Date())=>`${z(d.getDate())}-${z(d.getMonth()+1)}-${d.getFullYear()} ${z(d.getHours())}:${z(d.getMinutes())}`;
+const wIso=w=>w?`${w.slice(8,10)}-${w.slice(5,7)} ${w.slice(11,16)}`:'';
 const simpanLS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},ambilLS=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const daya=v=>{const n=parseFloat(v);return isNaN(n)?esc(v||'-'):n.toLocaleString('id-ID')};
+const uidBaru=()=>Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);
 if(CFG.repo)cfgSimpan('repo',CFG.repo);
+/* ---------- navigasi ---------- */
+const JUDUL={vHome:['⚡ Lapor SR-APP','ULP Woha • bisa dipakai tanpa sinyal'],vLapor:['Lapor gangguan','isi lengkap lalu tekan Kirim'],vDaftar:['Belum tindak lanjut','ganti meter • token prepaid'],vTL:['Tindak lanjut','isi setelah pekerjaan selesai']};
+function buka(v,tanpaRiwayat){document.querySelectorAll('main section').forEach(x=>x.classList.toggle('aktif',x.id==v));$('barLapor').classList.toggle('aktif',v=='vLapor');$('barTL').classList.toggle('aktif',v=='vTL'&&!(TL&&TL.tl));
+ $('judul').textContent=JUDUL[v][0];$('subjudul').textContent=JUDUL[v][1];$('bKembali').style.display=v=='vHome'?'none':'block';
+ if(!tanpaRiwayat&&v!='vHome')history.pushState({v},'');if(v=='vHome')segarkan();window.scrollTo(0,0)}
+$('bKembali').onclick=()=>history.back();
+window.addEventListener('popstate',e=>{const v=(e.state&&e.state.v)||'vHome';buka(v=='vTL'&&!TL?'vDaftar':v,true);if(v=='vDaftar')gambarDaftar()});
+/* ---------- foto (kompres + cap waktu/lokasi) ---------- */
+function kompres(f,baris){return new Promise((ok,no)=>{const img=new Image(),u=URL.createObjectURL(f);
+ img.onload=()=>{const mx=1600,r=Math.min(1,mx/Math.max(img.width,img.height)),w=Math.round(img.width*r),h=Math.round(img.height*r),c=document.createElement('canvas');c.width=w;c.height=h;
+  const x=c.getContext('2d');x.drawImage(img,0,0,w,h);const fs=Math.max(16,Math.round(w/42)),tg=fs*1.5*baris.length+fs*.6;
+  x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,h-tg,w,tg);x.fillStyle='#fff';x.font=`600 ${fs}px sans-serif`;baris.forEach((t,i)=>x.fillText(t,fs*.6,h-tg+fs*1.35+i*fs*1.5));
+  URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.72))};img.onerror=()=>no();img.src=u})}
+const gpsTeks=g=>g?`GPS ${g.lat.toFixed(6)}, ${g.lng.toFixed(6)} (±${Math.round(g.acc)} m)`:'GPS belum diambil';
+function kotakFoto(k,ik,l,w,d,fn){return `<div class="ft${d?' isi':''}">${d?`<img src="${d}">`:`<div class="ik">${ik}</div>`}<div><b>${l}</b><small class="${d?'':'wj'}">${d?'✓ tersimpan • ketuk untuk ganti':'📷 ketuk untuk ambil foto • '+w}</small></div><input type="file" accept="image/*" capture="environment" onchange="${fn}('${k}',this)"></div>`}
+function gambarFoto(){$('fotos').innerHTML=FOTO.filter(f=>f[0]!='ba'||S.sl).map(([k,ik,l,w])=>kotakFoto(k,ik,l,w,S.foto[k],'ambilFoto')).join('')}
+async function ambilFoto(k,inp){const f=inp.files&&inp.files[0];if(!f)return;
+ try{S.foto[k]=await kompres(f,[`ULP Woha • ${waktuTeks()} WITA`,gpsTeks(S.gps)+($('idpel').value?` • ${$('idpel').value}`:'')]);gambarFoto()}catch(e){alert('Foto tidak terbaca, coba ambil ulang.')}}
+function ambilGps(cb,el,btn){if(!navigator.geolocation){el.textContent='HP tidak mendukung GPS.';return}
+ el.textContent='Mencari lokasi… pastikan GPS/lokasi HP aktif.';btn.disabled=true;
+ navigator.geolocation.getCurrentPosition(p=>{const g={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy};btn.disabled=false;btn.textContent='📍 Perbarui';
+  el.innerHTML=`<b>✓ ${g.lat.toFixed(6)}, ${g.lng.toFixed(6)}</b><br>akurasi ±${Math.round(g.acc)} m`;cb(g)},
+  e=>{btn.disabled=false;el.textContent='❌ Lokasi gagal: '+(e.code==1?'izin lokasi ditolak. Izinkan lokasi untuk aplikasi ini di pengaturan HP.':'sinyal GPS lemah, coba di tempat terbuka.')},
+  {enableHighAccuracy:true,timeout:30000,maximumAge:0})}
+/* ---------- form lapor ---------- */
 ['unit','petugas'].forEach(k=>{$(k).value=ambilLS('sr_'+k)||(k=='unit'?(document.querySelector('#dUnit option')||{}).value||'':'');$(k).addEventListener('change',()=>simpanLS('sr_'+k,$(k).value.trim()))});
 document.querySelectorAll('#jenis button').forEach(b=>b.onclick=()=>{S.jenis=b.textContent;document.querySelectorAll('#jenis button').forEach(x=>x.classList.toggle('on',x==b))});
 document.querySelectorAll('#sl button').forEach(b=>b.onclick=()=>{S.sl=b.dataset.v=='1';document.querySelectorAll('#sl button').forEach(x=>x.classList.toggle('on',x==b));gambarFoto()});
 function ubahKabel(n){$('kabel').value=Math.max(0,(parseFloat($('kabel').value)||0)+n)}
-function gambarFoto(){$('fotos').innerHTML=FOTO.filter(f=>f[0]!='ba'||S.sl).map(([k,ik,l,w])=>{const d=S.foto[k];
- return `<div class="ft${d?' isi':''}">${d?`<img src="${d}">`:`<div class="ik">${ik}</div>`}<div><b>${l}</b><small class="${d?'':'wj'}">${d?'✓ tersimpan • ketuk untuk ganti':'📷 ketuk untuk ambil foto • '+w}</small></div>
- <input type="file" accept="image/*" capture="environment" onchange="ambilFoto('${k}',this)"></div>`}).join('')}
-function ambilFoto(k,inp){const f=inp.files&&inp.files[0];if(!f)return;const img=new Image(),u=URL.createObjectURL(f);
- img.onload=()=>{const mx=1600,r=Math.min(1,mx/Math.max(img.width,img.height)),w=Math.round(img.width*r),h=Math.round(img.height*r),c=document.createElement('canvas');c.width=w;c.height=h;
-  const x=c.getContext('2d');x.drawImage(img,0,0,w,h);/* cap waktu, lokasi & IDPEL di foto */
-  const fs=Math.max(16,Math.round(w/42)),baris=[`ULP Woha • ${waktuTeks()} WITA`,(S.gps?`GPS ${S.gps.lat.toFixed(6)}, ${S.gps.lng.toFixed(6)} (±${Math.round(S.gps.acc)} m)`:'GPS belum diambil')+($('idpel').value?` • ${$('idpel').value}`:'')];
-  const tg=fs*1.5*baris.length+fs*.6;x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,h-tg,w,tg);x.fillStyle='#fff';x.font=`600 ${fs}px sans-serif`;
-  baris.forEach((t,i)=>x.fillText(t,fs*.6,h-tg+fs*1.35+i*fs*1.5));
-  S.foto[k]=c.toDataURL('image/jpeg',.72);URL.revokeObjectURL(u);gambarFoto()};
- img.onerror=()=>{alert('Foto tidak terbaca, coba ambil ulang.')};img.src=u}
-$('bGps').onclick=()=>{if(!navigator.geolocation){$('tGps').textContent='HP tidak mendukung GPS.';return}
- $('tGps').textContent='Mencari lokasi… pastikan GPS/lokasi HP aktif.';$('bGps').disabled=true;
- navigator.geolocation.getCurrentPosition(p=>{S.gps={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy};$('bGps').disabled=false;$('bGps').textContent='📍 Perbarui';
-  $('tGps').innerHTML=`<b>✓ ${S.gps.lat.toFixed(6)}, ${S.gps.lng.toFixed(6)}</b><br>akurasi ±${Math.round(S.gps.acc)} m`;if(HPLG.length)tampilPlg()},
-  e=>{$('bGps').disabled=false;$('tGps').textContent='❌ Lokasi gagal: '+(e.code==1?'izin lokasi ditolak. Izinkan lokasi untuk aplikasi ini di pengaturan HP.':'sinyal GPS lemah, coba di tempat terbuka.')},
-  {enableHighAccuracy:true,timeout:30000,maximumAge:0})};
-const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const daya=v=>{const n=parseFloat(v);return isNaN(n)?esc(v||'-'):n.toLocaleString('id-ID')};
+$('bGps').onclick=()=>ambilGps(g=>{S.gps=g;if(HPLG.length)tampilPlg()},$('tGps'),$('bGps'));
 function jarakM(a,b,c,d){const R=6371000,r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
 function jarakTeks(p){if(!S.gps||p.lat==null)return '';const m=jarakM(S.gps.lat,S.gps.lng,p.lat,p.lng),t=m<1000?Math.round(m)+' m':(m/1000).toFixed(1)+' km';
  return m>300?`<div class="pk jauh">⚠ Lokasi Anda ${t} dari koordinat pelanggan di DIL. Pastikan IDPEL / lokasi benar.</div>`:`<div style="color:var(--hijau);font-weight:700">📍 ${t} dari koordinat pelanggan (DIL) ✓</div>`}
-let tPlg=null,qPlg='',HPLG=[];S.plg=null;
-$('idpel').addEventListener('input',()=>{clearTimeout(tPlg);const q=$('idpel').value.replace(/\s/g,'');S.plg=null;HPLG=[];if(q.length<8){$('plg').innerHTML='';return}tPlg=setTimeout(()=>cekPlg(q),700)});
+let qPlg='',HPLG=[];
+$('idpel').addEventListener('input',()=>{S.plg=null;HPLG=[];qPlg='';$('plg').innerHTML=''});
+$('idpel').addEventListener('keydown',e=>{if(e.key=='Enter'){e.preventDefault();$('bCari').click()}});
+$('bCari').onclick=()=>{const q=$('idpel').value.replace(/\s/g,'');if(q.length<6){$('plg').innerHTML='<div class="pk off">Ketik IDPEL / nomor meter dulu (minimal 6 angka).</div>';return}cekPlg(q)};
 async function cekPlg(q){qPlg=q;if(!navigator.onLine){$('plg').innerHTML='<div class="pk off">📴 Data pelanggan tampil saat ada sinyal. Laporan tetap bisa diisi &amp; dikirim.</div>';return}
  $('plg').innerHTML='<div class="pk">🔍 Mencari data pelanggan…</div>';
  try{const tok=await cfgAmbil('token'),b=await cariBase(diGithub());if(!b||!tok)throw 0;
   const r=await fetch(b+'/api/lapor/pelanggan',{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':tok},body:JSON.stringify({q})});
   const j=await r.json();if(q!==qPlg)return;if(!j.ok)throw 0;HPLG=j.hasil||[];tampilPlg()}
  catch(e){if(q===qPlg)$('plg').innerHTML='<div class="pk off">⚠️ Data pelanggan belum bisa diambil (server tidak terjangkau). Laporan tetap bisa dikirim.</div>'}}
+function kartuPlg(p){return `<div class="pj"><b>👤 ${esc(p.nama||'-')}</b><span class="tg ${p.sumber=='DIL'?'ok':'tunggu'}">${p.sumber=='DIL'?'DIL':esc(p.sumber)+(p.tgl?' '+p.tgl:'')}</span></div>
+  <div>IDPEL <b>${esc(p.idpel)}</b> • Meter <b>${esc(p.nometer||'-')}</b>${p.merk?' ('+esc(p.merk)+')':''}</div>
+  <div>${esc(p.tarif||'-')} / ${daya(p.daya)} VA${p.gardu?' • Gardu <b>'+esc(p.gardu)+'</b>':''}${p.tiang?' • Tiang '+esc(p.tiang):''}</div><div style="color:#6B7280">${esc(p.alamat||'')}</div>`}
 function tampilPlg(){const H=S.plg&&HPLG.length>1?[S.plg]:HPLG;if(!qPlg)return;
  if(!H.length){$('plg').innerHTML='<div class="pk off">❓ IDPEL / No meter tidak ditemukan di DIL maupun data lain. Periksa kembali nomornya.</div>';return}
- $('plg').innerHTML=(H.length>1?'<div style="font-size:12px;color:#6B7280;margin-top:8px">Nomor ini cocok dengan beberapa pelanggan, pilih yang benar:</div>':'')+H.map(p=>`<div class="pk ok"><div class="pj"><b>👤 ${esc(p.nama||'-')}</b><span class="tg ${p.sumber=='DIL'?'ok':'tunggu'}">${p.sumber=='DIL'?'DIL':esc(p.sumber)+(p.tgl?' '+p.tgl:'')}</span></div>
-  <div>IDPEL <b>${esc(p.idpel)}</b> • Meter <b>${esc(p.nometer||'-')}</b>${p.merk?' ('+esc(p.merk)+')':''}</div>
-  <div>${esc(p.tarif||'-')} / ${daya(p.daya)} VA${p.gardu?' • Gardu <b>'+esc(p.gardu)+'</b>':''}${p.tiang?' • Tiang '+esc(p.tiang):''}</div>
-  <div style="color:#6B7280">${esc(p.alamat||'')}</div>${p.sumber!='DIL'?'<div style="color:#7A5B00;font-size:12px">Tidak ada di DIL — data dari '+esc(p.sumber)+' terbaru</div>':''}${jarakTeks(p)}
+ $('plg').innerHTML=(H.length>1?'<div style="font-size:12px;color:#6B7280;margin-top:8px">Nomor ini cocok dengan beberapa pelanggan, pilih yang benar:</div>':'')+H.map(p=>`<div class="pk ok">${kartuPlg(p)}
+  ${p.sumber!='DIL'?'<div style="color:#7A5B00;font-size:12px">Tidak ada di DIL — data dari '+esc(p.sumber)+' terbaru</div>':''}${jarakTeks(p)}
   ${HPLG.length>1&&!S.plg?`<button type="button" onclick="pilihPlg('${esc(p.idpel)}')">✓ Pelanggan ini</button>`:''}</div>`).join('');
  if(HPLG.length==1)S.plg=HPLG[0]}
 function pilihPlg(id){S.plg=HPLG.find(p=>p.idpel==id)||null;if(S.plg){$('idpel').value=S.plg.idpel;qPlg=S.plg.idpel}tampilPlg()}
+/* ---------- status, antrean, riwayat ---------- */
 function sinyal(){const on=navigator.onLine;$('sinyal').className=on?'on':'off';$('sinyal').textContent=on?'● Online':'● Offline'}
-async function segarkan(){const A=await antriSemua(),r=(await cfgAmbil('riw'))||[];
+async function segarkan(){const A=await antriSemua(),r=(await cfgAmbil('riw'))||[],D=(await cfgAmbil('daftar'))||{belum:[]};
+ const tlTunggu=new Set(A.filter(a=>a.tipe=='tl').map(a=>a.id)),nb=(D.belum||[]).filter(x=>!tlTunggu.has(x.id)).length;
+ $('nBelum').style.display=nb?'inline-block':'none';$('nBelum').textContent=nb;
  $('kAntri').classList.toggle('ada',A.length>0);$('nAntri').textContent=A.length;
- $('lAntri').innerHTML=A.map(a=>`<div><b>${a.idpel}</b><span>${a.jenis}</span><span class="tg ${a.galat?'galat':'tunggu'}">${a.galat?'⚠ '+a.galat:waktuTeks(new Date(a.dibuat))}</span></div>`).join('');
- $('riw').innerHTML=r.length?r.slice(0,15).map(x=>`<div><b>${x.idpel}</b><span>${x.jenis}</span><span class="tg ${x.st=='ok'?'ok':x.st=='galat'?'galat':'tunggu'}">${x.st=='ok'?'✓ terkirim':x.st=='galat'?'⚠ ditolak':'📥 menunggu'} • ${x.waktu.slice(0,5)} ${x.waktu.slice(11)}</span></div>`).join(''):'<span style="color:#6B7280;font-size:13px">Belum ada laporan dari HP ini.</span>'}
+ $('lAntri').innerHTML=A.map(a=>`<div><b>${a.tipe=='tl'?'✅ TL ':''}${esc(a.idpel||'')}</b><span>${esc(a.tipe=='tl'?(a.hasil=='ganti'?'Ganti meter':'Perbaikan'):a.jenis)}</span><span class="tg ${a.galat?'galat':'tunggu'}">${a.galat?'⚠ '+esc(a.galat):waktuTeks(new Date(a.dibuat))}</span></div>`).join('');
+ $('riw').innerHTML=r.length?r.slice(0,15).map(x=>`<div><b>${x.tl?'✅ ':''}${esc(x.idpel)}</b><span>${esc(x.jenis)}</span><span class="tg ${x.st=='ok'?'ok':x.st=='galat'?'galat':'tunggu'}">${x.st=='ok'?'✓ terkirim':x.st=='galat'?'⚠ ditolak':'📥 menunggu'} • ${x.waktu.slice(0,5)} ${x.waktu.slice(11)}</span></div>`).join(''):'<span style="color:#6B7280;font-size:13px">Belum ada laporan dari HP ini.</span>'}
 async function sinkron(manual){const h=await kirimAntrian();await segarkan();
  if(h.galat==='login'){$('lMasuk').style.display='flex';$('psMasuk').textContent='Sesi habis / PIN diganti admin. Masuk lagi; laporan yang tersimpan tetap aman.'}
- if(manual)$('psAntri').textContent=h.galat==='net'?'❌ Belum ada sinyal / server belum terjangkau. Dicoba lagi otomatis.':h.galat&&h.galat!=='login'&&h.galat!=='sibuk'?'⚠ '+h.galat:h.terkirim?'✅ '+h.terkirim+' laporan terkirim':'';
- return h}
+ if(manual)$('psAntri').textContent=h.galat==='net'?'❌ Belum ada sinyal / server belum terjangkau. Dicoba lagi otomatis.':h.galat&&h.galat!=='login'&&h.galat!=='sibuk'?'⚠ '+h.galat:h.terkirim?'✅ '+h.terkirim+' terkirim':'';
+ if(h.terkirim)muatDaftarDiam().then(()=>{if($('vDaftar').classList.contains('aktif'))gambarDaftar()});return h}
 function mintaSync(){if('serviceWorker' in navigator)navigator.serviceWorker.ready.then(r=>{if(r.sync)r.sync.register('kirim-lapor').catch(()=>{})}).catch(()=>{})}
 $('bKirimAntri').onclick=()=>{$('psAntri').textContent='Mengirim…';sinkron(true)};
-$('bKirim').onclick=async()=>{const it={uid:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),dibuat:isoLokal(new Date()),
+async function simpanKirim(it,riwJenis,btn,teksBtn){btn.disabled=true;btn.textContent='Menyimpan…';
+ try{await antriTambah(it);const r=(await cfgAmbil('riw'))||[];r.unshift({uid:it.uid,idpel:it.idpel||'',jenis:riwJenis,tl:it.tipe=='tl',waktu:waktuTeks(),st:'tunggu'});await cfgSimpan('riw',r.slice(0,50))}
+ catch(e){btn.disabled=false;btn.textContent=teksBtn;return null}
+ btn.textContent='Mengirim…';if(navigator.onLine)await sinkron(false);mintaSync();btn.disabled=false;btn.textContent=teksBtn;
+ const x=((await cfgAmbil('riw'))||[]).find(a=>a.uid==it.uid);return !!(x&&x.st=='ok')}
+function layarSukses(terkirim,judulOk,isi,ke){$('sIk').textContent=terkirim?'✓':'📥';$('sIk').style.background=terkirim?'var(--hijau)':'var(--oranye)';
+ $('sJ').textContent=terkirim?judulOk:'Tersimpan di HP';$('sk').innerHTML=isi+(terkirim?'':'<br><br>Belum ada sinyal. Akan <b>terkirim otomatis</b> saat HP mendapat sinyal.');
+ $('sBtn').textContent=ke=='lapor'?'+ Lapor gangguan lain':'Kembali ke daftar';$('sBtn').onclick=()=>{$('sukses').style.display='none';if(ke=='lapor'){baru()}else{history.back()}};$('sukses').style.display='flex';segarkan()}
+$('bKirim').onclick=async()=>{const it={tipe:'lapor',uid:uidBaru(),dibuat:isoLokal(new Date()),
   unit:$('unit').value.trim(),petugas:$('petugas').value.trim(),idpel:$('idpel').value.trim(),jenis:S.jenis,ket:$('ket').value.trim(),
   kabel:$('kabel').value||0,sl:S.sl,lat:S.gps&&S.gps.lat,lng:S.gps&&S.gps.lng,akurasi:S.gps&&S.gps.acc,foto:{meter:S.foto.meter,kabel:S.foto.kabel,ba:S.sl?S.foto.ba:null}};
  const kurang=[];if(!it.unit)kurang.push('kantor unit');if(!it.petugas)kurang.push('nama petugas');if(!it.idpel)kurang.push('IDPEL / No meter');if(!it.jenis)kurang.push('jenis gangguan');
  if(!it.foto.meter)kurang.push('foto kWh meter');if(!it.foto.kabel)kurang.push('foto kabel SR');if(S.sl&&!it.foto.ba)kurang.push('foto berita acara');
  if(kurang.length){$('ps').textContent='Belum diisi: '+kurang.join(', ');return}
  if(!S.gps&&!confirm('Lokasi GPS belum diambil. Tetap kirim tanpa lokasi?'))return;
- simpanLS('sr_unit',it.unit);simpanLS('sr_petugas',it.petugas);$('bKirim').disabled=true;$('bKirim').textContent='Menyimpan…';
- try{await antriTambah(it);const r=(await cfgAmbil('riw'))||[];r.unshift({uid:it.uid,idpel:it.idpel,jenis:it.jenis,waktu:waktuTeks(),st:'tunggu'});await cfgSimpan('riw',r.slice(0,50))}
- catch(e){$('bKirim').disabled=false;$('bKirim').textContent='Kirim laporan';$('ps').textContent='❌ Memori HP penuh, hapus beberapa foto/aplikasi lalu coba lagi.';return}
- $('bKirim').textContent='Mengirim…';const h=navigator.onLine?await sinkron(false):{terkirim:0,galat:'net'};mintaSync();
- const ok=((await cfgAmbil('riw'))||[]).find(x=>x.uid==it.uid);const terkirim=ok&&ok.st=='ok';
- $('bKirim').disabled=false;$('bKirim').textContent='Kirim laporan';
- $('sIk').textContent=terkirim?'✓':'📥';$('sIk').style.background=terkirim?'var(--hijau)':'var(--oranye)';
- $('sJ').textContent=terkirim?'Laporan terkirim':'Tersimpan di HP';
- $('sk').innerHTML=`${it.idpel} • ${it.jenis} • ${waktuTeks()}`+(terkirim?'':'<br><br>Belum ada sinyal. Laporan akan <b>terkirim otomatis</b> saat HP mendapat sinyal (buka aplikasi ini lagi bila belum terkirim).');
- $('sukses').style.display='flex';segarkan()};
+ simpanLS('sr_unit',it.unit);simpanLS('sr_petugas',it.petugas);
+ const ok=await simpanKirim(it,it.jenis,$('bKirim'),'Kirim laporan');if(ok===null){$('ps').textContent='❌ Memori HP penuh, hapus beberapa foto/aplikasi lalu coba lagi.';return}
+ layarSukses(ok,'Laporan terkirim',`${esc(it.idpel)} • ${esc(it.jenis)} • ${waktuTeks()}`,'lapor')};
 function baru(){S.foto={};S.jenis='';S.gps=null;S.sl=false;S.plg=null;HPLG=[];qPlg='';$('plg').innerHTML='';['idpel','ket'].forEach(k=>$(k).value='');$('kabel').value=0;
  document.querySelectorAll('#jenis button').forEach(x=>x.classList.remove('on'));document.querySelectorAll('#sl button').forEach(x=>x.classList.toggle('on',x.dataset.v=='0'));
- $('tGps').textContent='Tekan tombol saat berada di lokasi pelanggan.';$('bGps').textContent='📍 Ambil lokasi';$('sukses').style.display='none';gambarFoto();segarkan();window.scrollTo(0,0)}
+ $('tGps').textContent='Tekan tombol saat berada di lokasi pelanggan.';$('bGps').textContent='📍 Ambil lokasi';gambarFoto();window.scrollTo(0,0)}
+/* ---------- menu Belum tindak lanjut ---------- */
+let TAB='belum',DAF=null,TL=null,TLS={hasil:'',foto:null,gps:null};
+async function bukaDaftar(){buka('vDaftar');DAF=await cfgAmbil('daftar');gambarDaftar();muatDaftar(false)}
+function tabD(t){TAB=t;$('tbBelum').classList.toggle('on',t=='belum');$('tbSelesai').classList.toggle('on',t=='selesai');gambarDaftar()}
+async function muatDaftar(manual){if(!navigator.onLine){$('wDaftar').textContent=DAF?'📴 offline • data '+DAF.waktu:'📴 offline • buka saat ada sinyal untuk memuat daftar';return}
+ $('wDaftar').textContent='Memuat…';
+ try{const tok=await cfgAmbil('token'),b=await cariBase(diGithub());if(!b||!tok)throw 0;
+  const r=await fetch(b+'/api/lapor/daftar',{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':tok},body:'{}'});
+  if(r.status==401){$('lMasuk').style.display='flex';return}const j=await r.json();if(!j.ok)throw 0;
+  DAF={waktu:waktuTeks(),belum:j.belum,selesai:j.selesai,vendor:j.vendor,base:b};await cfgSimpan('daftar',DAF);gambarDaftar();segarkan()}
+ catch(e){$('wDaftar').textContent=(DAF?'data '+DAF.waktu+' • ':'')+'⚠ server belum terjangkau'}}
+const fotoUrl=(id,j)=>DAF&&DAF.base&&TOKEN?`${DAF.base}/foto/${id}/${j}.jpg?t=${encodeURIComponent(TOKEN)}`:'';
+let TOKEN=null;cfgAmbil('token').then(t=>TOKEN=t);
+async function gambarDaftar(){const A=await antriSemua(),tunggu=new Set(A.filter(a=>a.tipe=='tl').map(a=>a.id));
+ if(!DAF){$('lDaftar').innerHTML='<div class="kt" style="text-align:center;color:#6B7280">Belum ada data. Buka saat ada sinyal.</div>';return}
+ $('wDaftar').textContent='data '+DAF.waktu;$('tbBelum').textContent=`Belum TL (${DAF.belum.filter(x=>!tunggu.has(x.id)).length})`;
+ const q=$('cariD').value.toLowerCase(),L=(TAB=='belum'?DAF.belum:DAF.selesai).filter(x=>!q||[x.idpel,(x.plg||{}).nama,(x.plg||{}).alamat,x.jenis,(x.plg||{}).nometer].join(' ').toLowerCase().includes(q));
+ $('lDaftar').innerHTML=L.length?L.map(x=>{const p=x.plg||{},u=fotoUrl(x.id,'meter');return `<div class="it" onclick="bukaTL('${x.id}')">${u?`<img src="${u}" loading="lazy" onerror="this.outerHTML='<div class=ph>⚡</div>'">`:'<div class="ph">⚡</div>'}
+  <div><b>${esc(p.nama||x.idpel)}</b><div>${esc(x.idpel)}${p.nometer&&p.nometer!=x.idpel?' • meter '+esc(p.nometer):''}</div><div class="al">${esc(p.alamat||x.unit)}</div>
+  <div class="tgs"><span class="tg galat">${esc(x.jenis)}</span><span class="tg biru">${wIso(x.waktu)}</span>${x.sl?'<span class="tg galat">🔌 SL</span>':''}${(x.token||[]).length?'<span class="tg ok">🔑 token ada</span>':''}${tunggu.has(x.id)?'<span class="tg tunggu">📥 TL menunggu kirim</span>':''}${x.tl?`<span class="tg ok">✅ ${esc(x.tl.vendor)}</span>`:''}</div></div></div>`}).join(''):`<div class="kt" style="text-align:center;color:#6B7280">${TAB=='belum'?'🎉 Tidak ada gangguan yang menunggu tindak lanjut.':'Belum ada tindak lanjut 14 hari terakhir.'}</div>`}
+function salin(t){const ok=()=>{const b=event&&event.target;if(b){const o=b.textContent;b.textContent='✓';setTimeout(()=>b.textContent=o,1200)}};
+ if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,()=>{});else{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();ok()}}
+function htmlToken(T){if(!T||!T.length)return `<div class="tok"><h3>🔑 Token prepaid</h3><small>Belum ada di file Monitoring Permohonan Token. Token muncul di sini setelah proses ganti meter di AP2T dan file token diimport ke bot. Tekan 🔄 Perbarui di daftar untuk cek ulang.</small></div>`;
+ return T.map(t=>`<div class="tok"><h3>🔑 Token prepaid ${esc(t.tgl)}</h3><small>Agenda ${esc(t.no_agenda||'-')} • ${esc(t.status||'')} • meter baru <b style="color:#fff">${esc(t.meter||'-')}</b>${t.krn?' • KRN '+esc(t.krn)+'/'+esc(t.vkrn||''):''}</small>
+  ${(t.kode||[]).map(([l,k])=>`<div class="tk"><div><span>${esc(l)}</span><code>${esc(k)}</code></div><button onclick="event.stopPropagation();salin('${esc(k).replace(/\s/g,'')}')">Salin</button></div>`).join('')||'<small>Kode token belum tersedia.</small>'}</div>`).join('')}
+async function bukaTL(id){const x=[...DAF.belum,...DAF.selesai].find(a=>a.id==id);if(!x)return;TL=x;TLS={hasil:'',foto:null,gps:null};
+ const p=x.plg||{},lat=x.lat??p.lat,lng=x.lng??p.lng,A=await antriSemua(),tunggu=A.some(a=>a.tipe=='tl'&&a.id==id);
+ $('dTL').innerHTML=`<div class="kt"><h2>👤 ${esc(p.nama||x.idpel)}</h2><div class="inf">
+  <div><span>IDPEL / meter</span><b>${esc(x.idpel)}${p.nometer&&p.nometer!=x.idpel?' • meter '+esc(p.nometer):''}</b></div>
+  ${p.tarif?`<div><span>Tarif/daya</span>${esc(p.tarif)} / ${daya(p.daya)} VA${p.gardu?' • gardu '+esc(p.gardu):''}</div>`:''}
+  <div><span>Alamat</span>${esc(p.alamat||'-')}</div>
+  <div><span>Gangguan</span><b style="color:var(--merah)">${esc(x.jenis)}</b>${x.sl?' • 🔌 sambung langsung':''}</div>
+  ${x.ket?`<div><span>Keterangan</span>${esc(x.ket)}</div>`:''}
+  <div><span>Dilaporkan</span>${wIso(x.waktu)} • ${esc(x.petugas)} (${esc(x.unit)})</div>
+  ${lat!=null?`<div><span>Lokasi</span><a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">🧭 Navigasi ke lokasi ›</a></div>`:''}</div>
+  ${navigator.onLine&&fotoUrl(x.id,'meter')?`<div class="gal">${(x.foto||[]).map(j=>`<img src="${fotoUrl(x.id,j)}" onclick="window.open(this.src)" onerror="this.remove()">`).join('')}</div>`:''}</div>
+  <div class="kt" style="padding:4px 12px 12px">${htmlToken(x.token)}</div>
+  ${x.tl?`<div class="kt"><h2>✅ Sudah ditindaklanjuti</h2><div class="inf"><div><span>Hasil</span><b>${x.tl.hasil=='ganti'?'Ganti meter':'Perbaikan tanpa ganti meter'}</b></div><div><span>PT vendor</span>${esc(x.tl.vendor)}</div><div><span>Petugas</span>${esc(x.tl.petugas)}</div>${x.tl.meter_baru?`<div><span>Meter baru</span><b>${esc(x.tl.meter_baru)}</b></div>`:''}<div><span>Waktu</span>${wIso(x.tl.waktu)}</div>${x.tl.ket?`<div><span>Keterangan</span>${esc(x.tl.ket)}</div>`:''}</div>${navigator.onLine&&fotoUrl(x.id,'tl')?`<div class="gal"><img src="${fotoUrl(x.id,'tl')}" onclick="window.open(this.src)" onerror="this.remove()"></div>`:''}</div>`
+  :tunggu?'<div class="kt" style="background:#FFF3E0">📥 Tindak lanjut sudah diisi dan menunggu dikirim (belum ada sinyal).</div>':''}`;
+ $('fTL').style.display=x.tl||tunggu?'none':'block';
+ $('vendor').value=ambilLS('sr_vendor')||'';$('ptgv').value=ambilLS('sr_ptgv')||'';$('meterBaru').value='';$('ketTL').value='';$('tGpsTL').textContent='opsional';$('bGpsTL').textContent='📍 Ambil lokasi';$('psTL').textContent='';
+ $('dVendor').innerHTML=(DAF.vendor||[]).map(v=>`<option value="${esc(v)}">`).join('');
+ document.querySelectorAll('#hasil button').forEach(b=>b.classList.remove('on'));$('wMeter').style.display='block';gambarFotoTL();
+ buka('vTL');$('barTL').classList.toggle('aktif',!(x.tl||tunggu))}
+document.querySelectorAll('#hasil button').forEach(b=>b.onclick=()=>{TLS.hasil=b.dataset.v;document.querySelectorAll('#hasil button').forEach(x=>x.classList.toggle('on',x==b));$('wMeter').style.display=TLS.hasil=='perbaikan'?'none':'block'});
+function gambarFotoTL(){$('fotoTL').innerHTML=kotakFoto('tl','📸','Foto eviden setelah ganti meter / perbaikan','wajib',TLS.foto,'ambilFotoTL')}
+async function ambilFotoTL(k,inp){const f=inp.files&&inp.files[0];if(!f)return;
+ try{TLS.foto=await kompres(f,[`TL ULP Woha • ${waktuTeks()} WITA • ${TL?TL.idpel:''}`,gpsTeks(TLS.gps)+($('meterBaru').value?` • meter baru ${$('meterBaru').value}`:'')]);gambarFotoTL()}catch(e){alert('Foto tidak terbaca, coba ambil ulang.')}}
+$('bGpsTL').onclick=()=>ambilGps(g=>{TLS.gps=g},$('tGpsTL'),$('bGpsTL'));
+$('bKirimTL').onclick=async()=>{if(!TL)return;const it={tipe:'tl',uid:uidBaru(),id:TL.id,idpel:TL.idpel,dibuat:isoLokal(new Date()),hasil:TLS.hasil,vendor:$('vendor').value.trim(),
+  petugas:$('ptgv').value.trim(),meter_baru:TLS.hasil=='ganti'?$('meterBaru').value.trim():'',ket:$('ketTL').value.trim(),lat:TLS.gps&&TLS.gps.lat,lng:TLS.gps&&TLS.gps.lng,foto:TLS.foto};
+ const kurang=[];if(!it.hasil)kurang.push('hasil tindak lanjut');if(!it.vendor)kurang.push('nama PT vendor');if(!it.petugas)kurang.push('nama petugas vendor');
+ if(it.hasil=='ganti'&&!it.meter_baru)kurang.push('nomor meter baru');if(!it.foto)kurang.push('foto eviden');
+ if(kurang.length){$('psTL').textContent='Belum diisi: '+kurang.join(', ');return}
+ simpanLS('sr_vendor',it.vendor);simpanLS('sr_ptgv',it.petugas);
+ const ok=await simpanKirim(it,it.hasil=='ganti'?'TL ganti meter':'TL perbaikan',$('bKirimTL'),'Kirim tindak lanjut');if(ok===null){$('psTL').textContent='❌ Memori HP penuh.';return}
+ if(ok&&navigator.onLine)muatDaftar(false);
+ layarSukses(ok,'Tindak lanjut terkirim',`${esc(TL.idpel)} • ${it.hasil=='ganti'?'meter baru '+esc(it.meter_baru):'perbaikan'} • ${esc(it.vendor)}`,'daftar')};
+/* ---------- masuk / keluar / sinkron ---------- */
 $('bMasuk').onclick=async()=>{const pin=$('pin').value.trim();if(!pin){$('psMasuk').textContent='Isi PIN.';return}
  if(!navigator.onLine){$('psMasuk').textContent='Perlu internet untuk masuk pertama kali.';return}
  $('bMasuk').disabled=true;$('psMasuk').textContent='Memeriksa…';
  try{const b=await cariBase(diGithub());if(!b)throw 0;const r=await fetch(b+'/api/lapor/masuk',{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1'},body:JSON.stringify({pin})});
   const j=await r.json().catch(()=>({}));if(!j.ok){$('psMasuk').textContent='❌ '+(j.pesan||'PIN salah');$('bMasuk').disabled=false;return}
-  await cfgSimpan('token',j.token);$('lMasuk').style.display='none';$('pin').value='';$('psMasuk').textContent='';$('bMasuk').disabled=false;sinkron(false)}
+  await cfgSimpan('token',j.token);TOKEN=j.token;$('lMasuk').style.display='none';$('pin').value='';$('psMasuk').textContent='';$('bMasuk').disabled=false;sinkron(false);muatDaftarDiam()}
  catch(e){$('psMasuk').textContent='❌ Server belum terjangkau (komputer bot mati / tidak ada sinyal). Coba lagi.';$('bMasuk').disabled=false}};
 $('pin').addEventListener('keydown',e=>{if(e.key=='Enter')$('bMasuk').click()});
-$('bKeluar').onclick=async()=>{const A=await antriSemua();if(A.length&&!confirm(A.length+' laporan belum terkirim tetap disimpan di HP ini. Keluar?'))return;if(!A.length&&!confirm('Keluar dari aplikasi?'))return;await cfgSimpan('token',null);$('lMasuk').style.display='flex'};
-document.querySelector('main').addEventListener('input',()=>{$('ps').textContent=''});document.querySelector('main').addEventListener('click',()=>{$('ps').textContent=''});
-window.addEventListener('online',()=>{sinyal();sinkron(false);const q=$('idpel').value.replace(/\s/g,'');if(q.length>=8&&!HPLG.length)cekPlg(q)});window.addEventListener('offline',sinyal);
+$('bKeluar').onclick=async()=>{const A=await antriSemua();if(A.length&&!confirm(A.length+' laporan belum terkirim tetap disimpan di HP ini. Keluar?'))return;if(!A.length&&!confirm('Keluar dari aplikasi?'))return;await cfgSimpan('token',null);TOKEN=null;$('lMasuk').style.display='flex'};
+async function muatDaftarDiam(){DAF=await cfgAmbil('daftar');if(navigator.onLine)await muatDaftar(false);segarkan()}
+document.querySelector('main').addEventListener('input',()=>{$('ps').textContent='';$('psTL').textContent=''});
+window.addEventListener('online',()=>{sinyal();sinkron(false);muatDaftarDiam()});window.addEventListener('offline',sinyal);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&navigator.onLine)sinkron(false)});
 setInterval(()=>{antriSemua().then(A=>{if(A.length&&navigator.onLine)sinkron(false)})},60000);
 let ip=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();ip=e;$('pasang').style.display='block'});
 $('pasang').onclick=()=>{if(ip){ip.prompt();ip=null;$('pasang').style.display='none'}};
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.tipe=='antrian')segarkan()})}
-gambarFoto();sinyal();segarkan();cfgAmbil('token').then(t=>{if(!t)$('lMasuk').style.display='flex';else if(navigator.onLine)sinkron(false)});
+history.replaceState({v:'vHome'},'');gambarFoto();sinyal();segarkan();
+cfgAmbil('token').then(t=>{TOKEN=t;if(!t)$('lMasuk').style.display='flex';else if(navigator.onLine){sinkron(false);muatDaftarDiam()}});
 </script></body></html>
