@@ -56,7 +56,9 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
 .tk code{display:block;font-size:19px;font-weight:800;letter-spacing:1px;color:#fff;font-family:ui-monospace,Consolas,monospace;word-break:break-all}.tk button{border:0;border-radius:10px;background:var(--emas);color:var(--navy);font-weight:800;padding:10px 12px}
 .inf{font-size:14px;line-height:1.55}.inf div{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid #EEF2F7}.inf div span{width:110px;flex:none;color:var(--abu);font-size:13px}.inf a{color:var(--navy2);font-weight:700}
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.gal img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#E8EEF6}
-.cari2{margin-bottom:10px}.minta{width:100%;margin-top:10px;padding:14px;border:0;border-radius:12px;background:var(--navy2);color:#fff;font-weight:800;font-size:15px}.minta:disabled{opacity:.6}
+.cari2{margin-bottom:10px}.tdk{display:grid;gap:8px}.tdk button{display:flex;align-items:center;gap:10px;text-align:left;padding:13px 14px;border:2px solid var(--garis);border-radius:14px;background:#fff;font-size:15px;font-weight:700;color:#1E2A3A}
+.tdk button small{display:block;font-weight:500;color:var(--abu);font-size:12px}.tdk button i{margin-left:auto;font-style:normal;width:26px;height:26px;border-radius:8px;border:2px solid var(--garis);display:grid;place-items:center}
+.tdk button.on{border-color:var(--navy);background:#EEF3FA}.tdk button.on i{background:var(--navy);border-color:var(--navy);color:#fff}.minta{width:100%;margin-top:10px;padding:14px;border:0;border-radius:12px;background:var(--navy2);color:#fff;font-weight:800;font-size:15px}.minta:disabled{opacity:.6}
 </style></head><body>
 <header><h1><button id="bKembali">‹</button><span id="judul">⚡ Lapor SR-APP</span></h1><p id="subjudul">ULP Woha • bisa dipakai tanpa sinyal</p><div class="st"><span id="sinyal" class="on">● Online</span><button class="kl" id="bKeluar">Keluar</button></div></header>
 <main>
@@ -72,18 +74,21 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
  <div class="kt"><h2>🕘 Riwayat dari HP ini</h2><div class="riw" id="riw"></div></div>
 </section>
 <section id="vLapor">
-<div class="kt"><h2><b>1</b>Petugas</h2>
+<div class="kt"><h2><b>1</b>Petugas &amp; pelapor</h2>
  <label>Kantor unit</label><input id="unit" list="dUnit" placeholder="pilih / ketik kantor unit"><datalist id="dUnit"><option value="ULP Woha"></datalist>
- <label>Nama petugas piket</label><input id="petugas" placeholder="nama lengkap" autocomplete="name"></div>
+ <label>Nama petugas piket</label><input id="petugas" placeholder="nama lengkap" autocomplete="name">
+ <label>Nama pelapor</label><input id="pelapor" placeholder="nama orang yang melapor gangguan">
+ <label>No HP pelapor</label><input id="hp" type="tel" inputmode="tel" maxlength="16" placeholder="08xxxxxxxxxx"></div>
 <div class="kt"><h2><b>2</b>Pelanggan &amp; lokasi</h2>
  <label>IDPEL / No meter</label><div class="cr"><input id="idpel" inputmode="numeric" placeholder="contoh 443301120672" maxlength="25"><button type="button" id="bCari">🔍 Cari</button></div><div id="plg"></div>
  <label>Lokasi GPS (tetap bisa tanpa internet)</label><div class="gps"><button type="button" id="bGps">📍 Ambil lokasi</button><div id="tGps">Tekan tombol saat berada di lokasi pelanggan.</div></div></div>
 <div class="kt"><h2><b>3</b>Gangguan</h2>
- <label>Jenis gangguan</label><div class="chips" id="jenis"><button type="button">kWh meter mati / rusak</button><button type="button">MCB trip / rusak</button><button type="button">Kabel SR putus / rusak</button><button type="button">Sambungan / konektor terbakar</button><button type="button">Box APP / segel rusak</button><button type="button">Tegangan tidak normal</button><button type="button">Lainnya</button></div>
- <label>Keterangan</label><textarea id="ket" maxlength="500" placeholder="kondisi di lapangan, tindakan yang dilakukan"></textarea></div>
-<div class="kt"><h2><b>4</b>Material &amp; sambung langsung</h2>
- <label>Panjang kabel SR yang dipakai</label><div class="kb"><button type="button" onclick="ubahKabel(-1)">−</button><input id="kabel" type="number" inputmode="decimal" min="0" step="1" value="0"><span>meter</span><button type="button" onclick="ubahKabel(1)">+</button></div>
- <label>Sambung langsung?</label><div class="yt" id="sl"><button type="button" data-v="0" class="on">Tidak</button><button type="button" data-v="1">Ya</button></div></div>
+ <label>Jenis gangguan</label><div class="chips" id="jenis"><button type="button">kWh Meter rusak</button><button type="button">MCB Rusak</button><button type="button">Kabel Rusak</button></div>
+ <div id="wRinci" style="display:none"><label id="lRinci">Rincian</label><div class="chips" id="rinci"></div></div>
+ <label>Tindak lanjut (rekomendasi perbaikan)</label><textarea id="ket" maxlength="500" placeholder="rekomendasi perbaikan, mis. perlu ganti kWh meter, MCB diganti 4A"></textarea></div>
+<div class="kt"><h2><b>4</b>Tindak lanjut</h2>
+ <label>Tindakan yang dilakukan (boleh lebih dari satu)</label><div class="tdk" id="tindakan"><button type="button" data-v="sl">Sambung Langsung<small style="margin-left:6px">(foto berita acara sambung langsung, foto sisa pulsa kWh)</small><i>✓</i></button><button type="button" data-v="mcb">Penormalan MCB<small style="margin-left:6px">(foto MCB)</small><i>✓</i></button><button type="button" data-v="sr">Ganti SR<small style="margin-left:6px">(foto SR (ganti SR))</small><i>✓</i></button></div>
+ <div id="wKabel" style="display:none"><label>Panjang kabel SR yang dipakai</label><div class="kb"><button type="button" onclick="ubahKabel(-1)">−</button><input id="kabel" type="number" inputmode="decimal" min="0" step="1" value="0"><span>meter</span><button type="button" onclick="ubahKabel(1)">+</button></div></div></div>
 <div class="kt"><h2><b>5</b>Foto</h2><div class="fotos" id="fotos"></div></div>
 </section>
 <section id="vDaftar">
@@ -146,8 +151,9 @@ async function kirimAntrian(){if(SEDANG)return {terkirim:0,galat:'sibuk'};SEDANG
  }catch(e){galat='net'}finally{SEDANG=false}
  return {terkirim:n,galat}}
 
-const FOTO=[['meter','📟','Foto kWh meter gangguan','wajib'],['kabel','🧵','Foto penggunaan kabel SR','wajib'],['ba','📄','Foto berita acara sambung langsung','wajib bila sambung langsung']];
-const $=i=>document.getElementById(i),S={jenis:'',sl:false,gps:null,foto:{},plg:null};
+const FOTO=[['meter','📟','Foto kWh meter gangguan','wajib',''],['ba','📄','Foto berita acara sambung langsung','wajib','sl'],['sisa','🔢','Foto sisa pulsa kWh','wajib','sl'],['mcb','🔘','Foto MCB','wajib','mcb'],['kabel','🧵','Foto SR (ganti SR)','wajib','sr']];
+const RINCI={"kWh Meter rusak": ["LCD Mati", "Relay Rusak", "Terbakar", "Serangga masuk kWh Meter", "Hilang"], "MCB Rusak": [], "Kabel Rusak": ["Terbakar", "Putus", "Hilang"]};
+const $=i=>document.getElementById(i),S={jenis:'',rinci:'',tdk:[],sl:false,gps:null,foto:{},plg:null};
 const z=n=>String(n).padStart(2,'0'),isoLokal=d=>`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}:${z(d.getSeconds())}`;
 const waktuTeks=(d=new Date())=>`${z(d.getDate())}-${z(d.getMonth()+1)}-${d.getFullYear()} ${z(d.getHours())}:${z(d.getMinutes())}`;
 const wIso=w=>w?`${w.slice(8,10)}-${w.slice(5,7)} ${w.slice(11,16)}`:'';
@@ -171,7 +177,7 @@ function kompres(f,baris){return new Promise((ok,no)=>{const img=new Image(),u=U
   URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.72))};img.onerror=()=>no();img.src=u})}
 const gpsTeks=g=>g?`GPS ${g.lat.toFixed(6)}, ${g.lng.toFixed(6)} (±${Math.round(g.acc)} m)`:'GPS belum diambil';
 function kotakFoto(k,ik,l,w,d,fn){return `<div class="ft${d?' isi':''}">${d?`<img src="${d}">`:`<div class="ik">${ik}</div>`}<div><b>${l}</b><small class="${d?'':'wj'}">${d?'✓ tersimpan • ketuk untuk ganti':'📷 ketuk untuk ambil foto • '+w}</small></div><input type="file" accept="image/*" capture="environment" onchange="${fn}('${k}',this)"></div>`}
-function gambarFoto(){$('fotos').innerHTML=FOTO.filter(f=>f[0]!='ba'||S.sl).map(([k,ik,l,w])=>kotakFoto(k,ik,l,w,S.foto[k],'ambilFoto')).join('')}
+function gambarFoto(){$('fotos').innerHTML=FOTO.filter(f=>!f[4]||S.tdk.includes(f[4])).map(([k,ik,l,w])=>kotakFoto(k,ik,l,w,S.foto[k],'ambilFoto')).join('')+(S.tdk.length?'':'<div style="font-size:12px;color:#6B7280">Pilih tindak lanjut di bagian 4 untuk menampilkan foto yang diperlukan.</div>')}
 async function ambilFoto(k,inp){const f=inp.files&&inp.files[0];if(!f)return;
  try{S.foto[k]=await kompres(f,[`ULP Woha • ${waktuTeks()} WITA`,gpsTeks(S.gps)+($('idpel').value?` • ${$('idpel').value}`:'')]);gambarFoto()}catch(e){alert('Foto tidak terbaca, coba ambil ulang.')}}
 function ambilGps(cb,el,btn){if(!navigator.geolocation){el.textContent='HP tidak mendukung GPS.';return}
@@ -182,8 +188,12 @@ function ambilGps(cb,el,btn){if(!navigator.geolocation){el.textContent='HP tidak
   {enableHighAccuracy:true,timeout:30000,maximumAge:0})}
 /* ---------- form lapor ---------- */
 ['unit','petugas'].forEach(k=>{$(k).value=ambilLS('sr_'+k)||(k=='unit'?(document.querySelector('#dUnit option')||{}).value||'':'');$(k).addEventListener('change',()=>simpanLS('sr_'+k,$(k).value.trim()))});
-document.querySelectorAll('#jenis button').forEach(b=>b.onclick=()=>{S.jenis=b.textContent;document.querySelectorAll('#jenis button').forEach(x=>x.classList.toggle('on',x==b))});
-document.querySelectorAll('#sl button').forEach(b=>b.onclick=()=>{S.sl=b.dataset.v=='1';document.querySelectorAll('#sl button').forEach(x=>x.classList.toggle('on',x==b));gambarFoto()});
+document.querySelectorAll('#jenis button').forEach(b=>b.onclick=()=>{S.jenis=b.textContent;S.rinci='';document.querySelectorAll('#jenis button').forEach(x=>x.classList.toggle('on',x==b));
+ const R=RINCI[S.jenis]||[];$('wRinci').style.display=R.length?'block':'none';$('lRinci').textContent='Rincian '+S.jenis;
+ $('rinci').innerHTML=R.map(x=>`<button type="button">${esc(x)}</button>`).join('');
+ document.querySelectorAll('#rinci button').forEach(c=>c.onclick=()=>{S.rinci=c.textContent;document.querySelectorAll('#rinci button').forEach(y=>y.classList.toggle('on',y==c))})});
+document.querySelectorAll('#tindakan button').forEach(b=>b.onclick=()=>{const v=b.dataset.v;S.tdk=S.tdk.includes(v)?S.tdk.filter(x=>x!=v):[...S.tdk,v];b.classList.toggle('on',S.tdk.includes(v));
+ S.sl=S.tdk.includes('sl');$('wKabel').style.display=S.tdk.includes('sr')?'block':'none';gambarFoto()});
 function ubahKabel(n){$('kabel').value=Math.max(0,(parseFloat($('kabel').value)||0)+n)}
 $('bGps').onclick=()=>ambilGps(g=>{S.gps=g;if(HPLG.length)tampilPlg()},$('tGps'),$('bGps'));
 function jarakM(a,b,c,d){const R=6371000,r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
@@ -231,18 +241,20 @@ async function simpanKirim(it,riwJenis,btn,teksBtn){btn.disabled=true;btn.textCo
 function layarSukses(terkirim,judulOk,isi,ke){$('sIk').textContent=terkirim?'✓':'📥';$('sIk').style.background=terkirim?'var(--hijau)':'var(--oranye)';
  $('sJ').textContent=terkirim?judulOk:'Tersimpan di HP';$('sk').innerHTML=isi+(terkirim?'':'<br><br>Belum ada sinyal. Akan <b>terkirim otomatis</b> saat HP mendapat sinyal.');
  $('sBtn').textContent=ke=='lapor'?'+ Lapor gangguan lain':'Kembali ke daftar';$('sBtn').onclick=()=>{$('sukses').style.display='none';if(ke=='lapor'){baru()}else{history.back()}};$('sukses').style.display='flex';segarkan()}
-$('bKirim').onclick=async()=>{const it={tipe:'lapor',uid:uidBaru(),dibuat:isoLokal(new Date()),
-  unit:$('unit').value.trim(),petugas:$('petugas').value.trim(),idpel:$('idpel').value.trim(),jenis:S.jenis,ket:$('ket').value.trim(),
-  kabel:$('kabel').value||0,sl:S.sl,lat:S.gps&&S.gps.lat,lng:S.gps&&S.gps.lng,akurasi:S.gps&&S.gps.acc,foto:{meter:S.foto.meter,kabel:S.foto.kabel,ba:S.sl?S.foto.ba:null}};
- const kurang=[];if(!it.unit)kurang.push('kantor unit');if(!it.petugas)kurang.push('nama petugas');if(!it.idpel)kurang.push('IDPEL / No meter');if(!it.jenis)kurang.push('jenis gangguan');
- if(!it.foto.meter)kurang.push('foto kWh meter');if(!it.foto.kabel)kurang.push('foto kabel SR');if(S.sl&&!it.foto.ba)kurang.push('foto berita acara');
+$('bKirim').onclick=async()=>{const foto={};FOTO.forEach(([k,,,,t])=>{if((!t||S.tdk.includes(t))&&S.foto[k])foto[k]=S.foto[k]});
+ const it={tipe:'lapor',uid:uidBaru(),dibuat:isoLokal(new Date()),unit:$('unit').value.trim(),petugas:$('petugas').value.trim(),pelapor:$('pelapor').value.trim(),hp:$('hp').value.trim(),
+  idpel:$('idpel').value.trim(),jenis:S.jenis+(S.rinci?' – '+S.rinci:''),ket:$('ket').value.trim(),tindakan:S.tdk,
+  kabel:S.tdk.includes('sr')?($('kabel').value||0):0,sl:S.sl,lat:S.gps&&S.gps.lat,lng:S.gps&&S.gps.lng,akurasi:S.gps&&S.gps.acc,foto};
+ const kurang=[];if(!it.unit)kurang.push('kantor unit');if(!it.petugas)kurang.push('nama petugas');if(!it.pelapor)kurang.push('nama pelapor');if(!/^[0-9+]{8,}$/.test(it.hp.replace(/[\s-]/g,'')))kurang.push('no HP pelapor');
+ if(!it.idpel)kurang.push('IDPEL / No meter');if(!S.jenis)kurang.push('jenis gangguan');else if((RINCI[S.jenis]||[]).length&&!S.rinci)kurang.push('rincian '+S.jenis);
+ if(!S.tdk.length)kurang.push('tindak lanjut');FOTO.forEach(([k,,l,,t])=>{if((!t||S.tdk.includes(t))&&!S.foto[k])kurang.push(l.toLowerCase())});
  if(kurang.length){$('ps').textContent='Belum diisi: '+kurang.join(', ');return}
  if(!S.gps&&!confirm('Lokasi GPS belum diambil. Tetap kirim tanpa lokasi?'))return;
  simpanLS('sr_unit',it.unit);simpanLS('sr_petugas',it.petugas);
  const ok=await simpanKirim(it,it.jenis,$('bKirim'),'Kirim laporan');if(ok===null){$('ps').textContent='❌ Memori HP penuh, hapus beberapa foto/aplikasi lalu coba lagi.';return}
  layarSukses(ok,'Laporan terkirim',`${esc(it.idpel)} • ${esc(it.jenis)} • ${waktuTeks()}`,'lapor')};
-function baru(){S.foto={};S.jenis='';S.gps=null;S.sl=false;S.plg=null;HPLG=[];qPlg='';$('plg').innerHTML='';['idpel','ket'].forEach(k=>$(k).value='');$('kabel').value=0;
- document.querySelectorAll('#jenis button').forEach(x=>x.classList.remove('on'));document.querySelectorAll('#sl button').forEach(x=>x.classList.toggle('on',x.dataset.v=='0'));
+function baru(){S.foto={};S.jenis='';S.rinci='';S.tdk=[];S.gps=null;S.sl=false;S.plg=null;HPLG=[];qPlg='';$('plg').innerHTML='';['idpel','ket','pelapor','hp'].forEach(k=>$(k).value='');$('kabel').value=0;
+ document.querySelectorAll('#jenis button,#tindakan button').forEach(x=>x.classList.remove('on'));$('wRinci').style.display='none';$('wKabel').style.display='none';
  $('tGps').textContent='Tekan tombol saat berada di lokasi pelanggan.';$('bGps').textContent='📍 Ambil lokasi';gambarFoto();window.scrollTo(0,0)}
 /* ---------- menu Belum tindak lanjut ---------- */
 let TAB='belum',DAF=null,TL=null,TLS={hasil:'',foto:null,gps:null};
@@ -283,8 +295,9 @@ async function bukaTL(id){const x=[...DAF.belum,...DAF.selesai].find(a=>a.id==id
   ${p.tarif?`<div><span>Tarif/daya</span>${esc(p.tarif)} / ${daya(p.daya)} VA${p.gardu?' • gardu '+esc(p.gardu):''}</div>`:''}
   <div><span>Alamat</span>${esc(p.alamat||'-')}</div>
   <div><span>Gangguan</span><b style="color:var(--merah)">${esc(x.jenis)}</b>${x.sl?' • 🔌 sambung langsung':''}</div>
-  ${x.ket?`<div><span>Keterangan</span>${esc(x.ket)}</div>`:''}
+  ${x.ket?`<div><span>Rekomendasi</span>${esc(x.ket)}</div>`:''}
   <div><span>Dilaporkan</span>${wIso(x.waktu)} • ${esc(x.petugas)} (${esc(x.unit)})</div>
+  ${x.pelapor?`<div><span>Pelapor</span>${esc(x.pelapor)}${x.hp?` • <a href="tel:${esc(x.hp)}">📞 ${esc(x.hp)}</a>`:''}</div>`:''}
   ${lat!=null?`<div><span>Lokasi</span><a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">🧭 Navigasi ke lokasi ›</a></div>`:''}</div>
   ${navigator.onLine&&fotoUrl(x.id,'meter')?`<div class="gal">${(x.foto||[]).map(j=>`<img src="${fotoUrl(x.id,j)}" onclick="window.open(this.src)" onerror="this.remove()">`).join('')}</div>`:''}</div>
   ${htmlDok(x)}
