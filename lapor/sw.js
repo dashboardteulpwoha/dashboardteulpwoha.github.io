@@ -30,7 +30,7 @@ async function kirimAntrian(){if(SEDANG)return {terkirim:0,galat:'sibuk'};SEDANG
  }catch(e){galat='net'}finally{SEDANG=false}
  return {terkirim:n,galat}}
 
-const CACHE='lapor-sr-006107cc31',ASET=['./','./manifest.json','./ikon.svg'];
+const CACHE='lapor-sr-ebf652a1ed',ASET=['./','./manifest.json','./ikon.svg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASET)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('lapor-sr-')&&x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{const q=e.request,u=new URL(q.url);if(q.method!=='GET'||u.origin!==self.location.origin)return;
