@@ -41,6 +41,9 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
 .tg{font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px;white-space:nowrap}.tg.ok{background:#E8F5E9;color:var(--hijau)}.tg.tunggu{background:#FFF3E0;color:var(--oranye)}.tg.galat{background:#FDECEA;color:var(--merah)}
 .antri{display:none;background:#FFF3E0;border:2px solid #FFCC80}.antri.ada{display:block}.antri .bt{display:flex;gap:8px;margin-top:10px}
 .antri .bt button{flex:1;padding:12px;border:0;border-radius:12px;font-weight:800;font-size:14px;background:var(--oranye);color:#fff}
+.pk{margin-top:10px;border-radius:14px;padding:12px;font-size:13px;line-height:1.5;background:#F5F8FC;border:1px solid var(--garis)}
+.pk.ok{background:#F2FAF3;border-color:#B7DFBB}.pk.off{background:#FFF8E1;border-color:#FFE08A;color:#7A5B00}.pk.jauh{background:#FDECEA;color:var(--merah);margin-top:6px;padding:6px 10px;border:0;font-weight:700}
+.pk .pj{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:15px}.pk button{margin-top:8px;width:100%;padding:10px;border:0;border-radius:10px;background:var(--navy);color:#fff;font-weight:700}
 .pasang{display:none;margin:0 0 12px;width:100%;padding:12px;border:0;border-radius:12px;background:#E8EEF6;color:var(--navy);font-weight:700;font-size:14px}
 </style></head><body>
 <header><h1>⚡ Lapor Gangguan SR-APP</h1><p>ULP Woha • bisa dipakai tanpa sinyal</p><div class="st"><span id="sinyal" class="on">● Online</span><button class="kl" id="bKeluar">Keluar</button></div></header>
@@ -53,7 +56,7 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
  <label>Kantor unit</label><input id="unit" list="dUnit" placeholder="pilih / ketik kantor unit"><datalist id="dUnit"><option value="ULP Woha"></datalist>
  <label>Nama petugas piket</label><input id="petugas" placeholder="nama lengkap" autocomplete="name"></div>
 <div class="kt"><h2><b>2</b>Pelanggan &amp; lokasi</h2>
- <label>IDPEL / No meter</label><input id="idpel" inputmode="numeric" placeholder="contoh 443301120672" maxlength="25">
+ <label>IDPEL / No meter</label><input id="idpel" inputmode="numeric" placeholder="contoh 443301120672" maxlength="25"><div id="plg"></div>
  <label>Lokasi GPS (tetap bisa tanpa internet)</label><div class="gps"><button type="button" id="bGps">📍 Ambil lokasi</button><div id="tGps">Tekan tombol saat berada di lokasi pelanggan.</div></div></div>
 <div class="kt"><h2><b>3</b>Gangguan</h2>
  <label>Jenis gangguan</label><div class="chips" id="jenis"><button type="button">kWh meter mati / rusak</button><button type="button">MCB trip / rusak</button><button type="button">Kabel SR putus / rusak</button><button type="button">Sambungan / konektor terbakar</button><button type="button">Box APP / segel rusak</button><button type="button">Tegangan tidak normal</button><button type="button">Lainnya</button></div>
@@ -127,9 +130,31 @@ function ambilFoto(k,inp){const f=inp.files&&inp.files[0];if(!f)return;const img
 $('bGps').onclick=()=>{if(!navigator.geolocation){$('tGps').textContent='HP tidak mendukung GPS.';return}
  $('tGps').textContent='Mencari lokasi… pastikan GPS/lokasi HP aktif.';$('bGps').disabled=true;
  navigator.geolocation.getCurrentPosition(p=>{S.gps={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy};$('bGps').disabled=false;$('bGps').textContent='📍 Perbarui';
-  $('tGps').innerHTML=`<b>✓ ${S.gps.lat.toFixed(6)}, ${S.gps.lng.toFixed(6)}</b><br>akurasi ±${Math.round(S.gps.acc)} m`},
+  $('tGps').innerHTML=`<b>✓ ${S.gps.lat.toFixed(6)}, ${S.gps.lng.toFixed(6)}</b><br>akurasi ±${Math.round(S.gps.acc)} m`;if(HPLG.length)tampilPlg()},
   e=>{$('bGps').disabled=false;$('tGps').textContent='❌ Lokasi gagal: '+(e.code==1?'izin lokasi ditolak. Izinkan lokasi untuk aplikasi ini di pengaturan HP.':'sinyal GPS lemah, coba di tempat terbuka.')},
   {enableHighAccuracy:true,timeout:30000,maximumAge:0})};
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const daya=v=>{const n=parseFloat(v);return isNaN(n)?esc(v||'-'):n.toLocaleString('id-ID')};
+function jarakM(a,b,c,d){const R=6371000,r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+function jarakTeks(p){if(!S.gps||p.lat==null)return '';const m=jarakM(S.gps.lat,S.gps.lng,p.lat,p.lng),t=m<1000?Math.round(m)+' m':(m/1000).toFixed(1)+' km';
+ return m>300?`<div class="pk jauh">⚠ Lokasi Anda ${t} dari koordinat pelanggan di DIL. Pastikan IDPEL / lokasi benar.</div>`:`<div style="color:var(--hijau);font-weight:700">📍 ${t} dari koordinat pelanggan (DIL) ✓</div>`}
+let tPlg=null,qPlg='',HPLG=[];S.plg=null;
+$('idpel').addEventListener('input',()=>{clearTimeout(tPlg);const q=$('idpel').value.replace(/\s/g,'');S.plg=null;HPLG=[];if(q.length<8){$('plg').innerHTML='';return}tPlg=setTimeout(()=>cekPlg(q),700)});
+async function cekPlg(q){qPlg=q;if(!navigator.onLine){$('plg').innerHTML='<div class="pk off">📴 Data pelanggan tampil saat ada sinyal. Laporan tetap bisa diisi &amp; dikirim.</div>';return}
+ $('plg').innerHTML='<div class="pk">🔍 Mencari data pelanggan…</div>';
+ try{const tok=await cfgAmbil('token'),b=await cariBase(diGithub());if(!b||!tok)throw 0;
+  const r=await fetch(b+'/api/lapor/pelanggan',{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':tok},body:JSON.stringify({q})});
+  const j=await r.json();if(q!==qPlg)return;if(!j.ok)throw 0;HPLG=j.hasil||[];tampilPlg()}
+ catch(e){if(q===qPlg)$('plg').innerHTML='<div class="pk off">⚠️ Data pelanggan belum bisa diambil (server tidak terjangkau). Laporan tetap bisa dikirim.</div>'}}
+function tampilPlg(){const H=S.plg&&HPLG.length>1?[S.plg]:HPLG;if(!qPlg)return;
+ if(!H.length){$('plg').innerHTML='<div class="pk off">❓ IDPEL / No meter tidak ditemukan di DIL maupun data lain. Periksa kembali nomornya.</div>';return}
+ $('plg').innerHTML=(H.length>1?'<div style="font-size:12px;color:#6B7280;margin-top:8px">Nomor ini cocok dengan beberapa pelanggan, pilih yang benar:</div>':'')+H.map(p=>`<div class="pk ok"><div class="pj"><b>👤 ${esc(p.nama||'-')}</b><span class="tg ${p.sumber=='DIL'?'ok':'tunggu'}">${p.sumber=='DIL'?'DIL':esc(p.sumber)+(p.tgl?' '+p.tgl:'')}</span></div>
+  <div>IDPEL <b>${esc(p.idpel)}</b> • Meter <b>${esc(p.nometer||'-')}</b>${p.merk?' ('+esc(p.merk)+')':''}</div>
+  <div>${esc(p.tarif||'-')} / ${daya(p.daya)} VA${p.gardu?' • Gardu <b>'+esc(p.gardu)+'</b>':''}${p.tiang?' • Tiang '+esc(p.tiang):''}</div>
+  <div style="color:#6B7280">${esc(p.alamat||'')}</div>${p.sumber!='DIL'?'<div style="color:#7A5B00;font-size:12px">Tidak ada di DIL — data dari '+esc(p.sumber)+' terbaru</div>':''}${jarakTeks(p)}
+  ${HPLG.length>1&&!S.plg?`<button type="button" onclick="pilihPlg('${esc(p.idpel)}')">✓ Pelanggan ini</button>`:''}</div>`).join('');
+ if(HPLG.length==1)S.plg=HPLG[0]}
+function pilihPlg(id){S.plg=HPLG.find(p=>p.idpel==id)||null;if(S.plg){$('idpel').value=S.plg.idpel;qPlg=S.plg.idpel}tampilPlg()}
 function sinyal(){const on=navigator.onLine;$('sinyal').className=on?'on':'off';$('sinyal').textContent=on?'● Online':'● Offline'}
 async function segarkan(){const A=await antriSemua(),r=(await cfgAmbil('riw'))||[];
  $('kAntri').classList.toggle('ada',A.length>0);$('nAntri').textContent=A.length;
@@ -158,7 +183,7 @@ $('bKirim').onclick=async()=>{const it={uid:Date.now().toString(36)+'-'+Math.ran
  $('sJ').textContent=terkirim?'Laporan terkirim':'Tersimpan di HP';
  $('sk').innerHTML=`${it.idpel} • ${it.jenis} • ${waktuTeks()}`+(terkirim?'':'<br><br>Belum ada sinyal. Laporan akan <b>terkirim otomatis</b> saat HP mendapat sinyal (buka aplikasi ini lagi bila belum terkirim).');
  $('sukses').style.display='flex';segarkan()};
-function baru(){S.foto={};S.jenis='';S.gps=null;S.sl=false;['idpel','ket'].forEach(k=>$(k).value='');$('kabel').value=0;
+function baru(){S.foto={};S.jenis='';S.gps=null;S.sl=false;S.plg=null;HPLG=[];qPlg='';$('plg').innerHTML='';['idpel','ket'].forEach(k=>$(k).value='');$('kabel').value=0;
  document.querySelectorAll('#jenis button').forEach(x=>x.classList.remove('on'));document.querySelectorAll('#sl button').forEach(x=>x.classList.toggle('on',x.dataset.v=='0'));
  $('tGps').textContent='Tekan tombol saat berada di lokasi pelanggan.';$('bGps').textContent='📍 Ambil lokasi';$('sukses').style.display='none';gambarFoto();segarkan();window.scrollTo(0,0)}
 $('bMasuk').onclick=async()=>{const pin=$('pin').value.trim();if(!pin){$('psMasuk').textContent='Isi PIN.';return}
@@ -171,7 +196,7 @@ $('bMasuk').onclick=async()=>{const pin=$('pin').value.trim();if(!pin){$('psMasu
 $('pin').addEventListener('keydown',e=>{if(e.key=='Enter')$('bMasuk').click()});
 $('bKeluar').onclick=async()=>{const A=await antriSemua();if(A.length&&!confirm(A.length+' laporan belum terkirim tetap disimpan di HP ini. Keluar?'))return;if(!A.length&&!confirm('Keluar dari aplikasi?'))return;await cfgSimpan('token',null);$('lMasuk').style.display='flex'};
 document.querySelector('main').addEventListener('input',()=>{$('ps').textContent=''});document.querySelector('main').addEventListener('click',()=>{$('ps').textContent=''});
-window.addEventListener('online',()=>{sinyal();sinkron(false)});window.addEventListener('offline',sinyal);
+window.addEventListener('online',()=>{sinyal();sinkron(false);const q=$('idpel').value.replace(/\s/g,'');if(q.length>=8&&!HPLG.length)cekPlg(q)});window.addEventListener('offline',sinyal);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&navigator.onLine)sinkron(false)});
 setInterval(()=>{antriSemua().then(A=>{if(A.length&&navigator.onLine)sinkron(false)})},60000);
 let ip=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();ip=e;$('pasang').style.display='block'});
