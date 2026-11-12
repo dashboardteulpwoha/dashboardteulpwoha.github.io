@@ -1,0 +1,181 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0F2640">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="ikon.svg"><link rel="apple-touch-icon" href="ikon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes"><title>Lapor SR-APP • ULP Woha</title>
+<style>
+:root{--navy:#0F2640;--navy2:#1F4E78;--emas:#F2B134;--abu:#6B7280;--garis:#DDE3EC;--hijau:#2E7D32;--merah:#C62828;--oranye:#EF6C00;--bg:#EEF2F7}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:system-ui,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:#1E2A3A;padding-bottom:110px}
+header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 46px;position:relative}
+header h1{margin:0;font-size:20px}header p{margin:3px 0 0;color:#C9D6E8;font-size:13px}
+.st{position:absolute;right:12px;top:calc(12px + env(safe-area-inset-top));display:flex;gap:6px;align-items:center}
+.on,.off{font-size:12px;font-weight:700;padding:5px 10px;border-radius:20px}.on{background:rgba(46,125,50,.25);color:#9BE7A6}.off{background:rgba(198,40,40,.3);color:#FFB4AB}
+.kl{color:#C9D6E8;font-size:12px;border:1px solid rgba(255,255,255,.3);padding:4px 9px;border-radius:20px;background:none}
+main{margin:-32px 12px 0;position:relative}
+.kt{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(15,38,64,.06)}
+.kt h2{margin:0 0 12px;font-size:16px;display:flex;align-items:center;gap:10px}.kt h2 b{width:28px;height:28px;border-radius:50%;background:var(--navy);color:var(--emas);display:grid;place-items:center;font-size:14px}
+label{display:block;font-size:13px;font-weight:700;color:var(--abu);margin:12px 0 6px}label:first-of-type{margin-top:0}
+input,textarea{width:100%;padding:14px;border:2px solid var(--garis);border-radius:12px;font-size:16px;font-family:inherit;background:#fff;color:#1E2A3A}
+input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:vertical;min-height:80px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chips button{border:2px solid var(--garis);background:#fff;border-radius:22px;padding:10px 14px;font-size:14px;font-weight:600;color:#1E2A3A}
+.chips button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.gps{display:flex;gap:10px;align-items:center}.gps button{flex:none;border:0;background:var(--navy);color:#fff;border-radius:12px;padding:14px 16px;font-weight:700;font-size:15px}
+.gps div{font-size:13px;color:var(--abu);line-height:1.4}.gps div b{color:#1E2A3A;font-size:14px}.gps a{color:var(--navy2)}
+.kb{display:flex;align-items:center;gap:8px}.kb button{width:56px;height:56px;border:0;border-radius:14px;background:#E8EEF6;font-size:26px;font-weight:800;color:var(--navy)}
+.kb input{text-align:center;font-size:24px;font-weight:800}.kb span{font-weight:700;color:var(--abu)}
+.yt{display:grid;grid-template-columns:1fr 1fr;gap:8px}.yt button{padding:14px;border:2px solid var(--garis);border-radius:12px;background:#fff;font-size:15px;font-weight:700}
+.yt button.on{border-color:var(--navy);background:var(--navy);color:#fff}
+.fotos{display:grid;gap:10px}.ft{position:relative;border:2px dashed #B9C4D3;border-radius:16px;min-height:120px;display:flex;align-items:center;gap:12px;padding:12px;background:#F8FAFD}
+.ft.isi{border-style:solid;border-color:var(--hijau);background:#F2FAF3}.ft .ik{font-size:34px;width:56px;text-align:center}.ft img{width:96px;height:96px;object-fit:cover;border-radius:12px;flex:none}
+.ft b{display:block;font-size:15px}.ft small{color:var(--abu);font-size:12px}.ft .wj{color:var(--merah);font-weight:700}.ft input{position:absolute;inset:0;opacity:0;width:100%;height:100%}
+.kirim{position:fixed;left:0;right:0;bottom:0;padding:12px 12px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 30%)}
+.kirim button{width:100%;padding:18px;border:0;border-radius:16px;background:var(--emas);color:var(--navy);font-size:18px;font-weight:800;box-shadow:0 8px 20px rgba(242,177,52,.4)}
+.kirim button:disabled{opacity:.6}.ps{font-size:13px;margin-top:8px;color:var(--merah);font-weight:600;text-align:center}
+.layar{position:fixed;inset:0;background:var(--navy);color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:9}
+.layar .c{width:110px;height:110px;border-radius:50%;background:var(--hijau);display:grid;place-items:center;font-size:56px;margin-bottom:18px;animation:pop .4s}
+@keyframes pop{0%{transform:scale(.3)}80%{transform:scale(1.1)}100%{transform:scale(1)}}
+.layar button{margin-top:22px;padding:16px 28px;border:0;border-radius:14px;background:var(--emas);color:var(--navy);font-size:17px;font-weight:800}
+.layar p{color:#C9D6E8;max-width:340px}
+.masuk{background:linear-gradient(160deg,#0F2640,#1F4E78)}.masuk .k{background:#fff;color:#142F4E;border-radius:22px;padding:26px 22px;width:min(360px,90vw)}
+.masuk .k h2{margin:0 0 4px}.masuk .k p{color:var(--abu);margin:0 0 16px;font-size:14px}.masuk input{text-align:center;font-size:24px;letter-spacing:6px}.masuk .k button{width:100%;margin-top:14px}
+.riw div{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid #EEF2F7;font-size:13px}.riw div:last-child{border:0}.riw span{color:var(--abu)}
+.tg{font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px;white-space:nowrap}.tg.ok{background:#E8F5E9;color:var(--hijau)}.tg.tunggu{background:#FFF3E0;color:var(--oranye)}.tg.galat{background:#FDECEA;color:var(--merah)}
+.antri{display:none;background:#FFF3E0;border:2px solid #FFCC80}.antri.ada{display:block}.antri .bt{display:flex;gap:8px;margin-top:10px}
+.antri .bt button{flex:1;padding:12px;border:0;border-radius:12px;font-weight:800;font-size:14px;background:var(--oranye);color:#fff}
+.pasang{display:none;margin:0 0 12px;width:100%;padding:12px;border:0;border-radius:12px;background:#E8EEF6;color:var(--navy);font-weight:700;font-size:14px}
+</style></head><body>
+<header><h1>⚡ Lapor Gangguan SR-APP</h1><p>ULP Woha • bisa dipakai tanpa sinyal</p><div class="st"><span id="sinyal" class="on">● Online</span><button class="kl" id="bKeluar">Keluar</button></div></header>
+<main>
+<button class="pasang" id="pasang">📲 Pasang aplikasi di layar HP</button>
+<div class="kt antri" id="kAntri"><h2>📤 Menunggu dikirim <span id="nAntri" class="tg tunggu"></span></h2>
+ <div style="font-size:13px;color:#7A4B00">Laporan tersimpan aman di HP dan dikirim otomatis begitu ada sinyal.</div><div class="riw" id="lAntri"></div>
+ <div class="bt"><button id="bKirimAntri">🔄 Kirim sekarang</button></div><div class="ps" id="psAntri"></div></div>
+<div class="kt"><h2><b>1</b>Petugas</h2>
+ <label>Kantor unit</label><input id="unit" list="dUnit" placeholder="pilih / ketik kantor unit"><datalist id="dUnit"><option value="ULP Woha"></datalist>
+ <label>Nama petugas piket</label><input id="petugas" placeholder="nama lengkap" autocomplete="name"></div>
+<div class="kt"><h2><b>2</b>Pelanggan &amp; lokasi</h2>
+ <label>IDPEL / No meter</label><input id="idpel" inputmode="numeric" placeholder="contoh 443301120672" maxlength="25">
+ <label>Lokasi GPS (tetap bisa tanpa internet)</label><div class="gps"><button type="button" id="bGps">📍 Ambil lokasi</button><div id="tGps">Tekan tombol saat berada di lokasi pelanggan.</div></div></div>
+<div class="kt"><h2><b>3</b>Gangguan</h2>
+ <label>Jenis gangguan</label><div class="chips" id="jenis"><button type="button">kWh meter mati / rusak</button><button type="button">MCB trip / rusak</button><button type="button">Kabel SR putus / rusak</button><button type="button">Sambungan / konektor terbakar</button><button type="button">Box APP / segel rusak</button><button type="button">Tegangan tidak normal</button><button type="button">Lainnya</button></div>
+ <label>Keterangan</label><textarea id="ket" maxlength="500" placeholder="kondisi di lapangan, tindakan yang dilakukan"></textarea></div>
+<div class="kt"><h2><b>4</b>Material &amp; sambung langsung</h2>
+ <label>Panjang kabel SR yang dipakai</label><div class="kb"><button type="button" onclick="ubahKabel(-1)">−</button><input id="kabel" type="number" inputmode="decimal" min="0" step="1" value="0"><span>meter</span><button type="button" onclick="ubahKabel(1)">+</button></div>
+ <label>Sambung langsung?</label><div class="yt" id="sl"><button type="button" data-v="0" class="on">Tidak</button><button type="button" data-v="1">Ya</button></div></div>
+<div class="kt"><h2><b>5</b>Foto</h2><div class="fotos" id="fotos"></div></div>
+<div class="kt"><h2>🕘 Riwayat dari HP ini</h2><div class="riw" id="riw"></div></div>
+</main>
+<div class="kirim"><button id="bKirim">Kirim laporan</button><div class="ps" id="ps"></div></div>
+<div class="layar" id="sukses"><div class="c" id="sIk">✓</div><h2 style="margin:0" id="sJ">Laporan terkirim</h2><p id="sk"></p><button onclick="baru()">+ Lapor gangguan lain</button></div>
+<div class="layar masuk" id="lMasuk"><div class="k"><div style="font-size:42px">⚡</div><h2>Lapor Gangguan SR-APP</h2><p>ULP Woha • masukkan PIN petugas<br><small>(cukup sekali, perlu internet)</small></p>
+ <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="••••">
+ <button id="bMasuk" style="padding:16px;border:0;border-radius:14px;background:var(--emas);color:var(--navy);font-size:17px;font-weight:800">Masuk</button><div class="ps" id="psMasuk"></div></div></div>
+<script>
+const CFG={repo:'dashboardteulpwoha/dashboardteulpwoha.github.io'};
+
+const DBN='lapor-sr';
+function idb(){return new Promise((ok,no)=>{const r=indexedDB.open(DBN,1);r.onupgradeneeded=()=>{const d=r.result;d.createObjectStore('antri',{keyPath:'uid'});d.createObjectStore('cfg')};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
+async function tx(st,mode,fn){const d=await idb();return new Promise((ok,no)=>{const t=d.transaction(st,mode),s=t.objectStore(st);let h;const r=fn(s);if(r)r.onsuccess=()=>{h=r.result};t.oncomplete=()=>ok(h);t.onerror=()=>no(t.error)})}
+const cfgAmbil=k=>tx('cfg','readonly',s=>s.get(k)),cfgSimpan=(k,v)=>tx('cfg','readwrite',s=>s.put(v,k));
+const antriSemua=()=>tx('antri','readonly',s=>s.getAll()),antriTambah=x=>tx('antri','readwrite',s=>s.put(x)),antriHapus=u=>tx('antri','readwrite',s=>s.delete(u));
+const diGithub=()=>/\.github\.io$/.test(self.location.hostname);
+async function cariBase(paksa){/* alamat server bot terbaru */
+ if(!diGithub()&&!paksa)return self.location.origin;
+ try{let url=null;
+  if(diGithub()){const j=await (await fetch(new URL('../link.json',self.location.href).href+'?t='+Date.now(),{cache:'no-store'})).json();url=j.url}
+  else{const repo=await cfgAmbil('repo');if(repo){const j=await (await fetch('https://api.github.com/repos/'+repo+'/contents/link.json?t='+Date.now(),{cache:'no-store'})).json();url=JSON.parse(atob(j.content.replace(/\s/g,''))).url}}
+  if(url){url=url.replace(/\/+$/,'');await cfgSimpan('base',url);return url}}catch(e){}
+ const b=await cfgAmbil('base');return b||(diGithub()?null:self.location.origin)}
+async function kirimSatu(base,token,it){if(!base)return 'net';
+ try{const r=await fetch(base+'/api/lapor',{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':token},body:JSON.stringify(it)});
+  if(r.status==401)return 'login';const j=await r.json().catch(()=>({}));if(r.ok&&j.ok)return 'ok';if(r.status>=500||r.status==429)return 'net';return j.pesan||('ditolak server ('+r.status+')')}catch(e){return 'net'}}
+async function tandaiRiw(uid,st){const r=(await cfgAmbil('riw'))||[];const x=r.find(a=>a.uid==uid);if(x){x.st=st;await cfgSimpan('riw',r)}}
+let SEDANG=false;
+async function kirimAntrian(){if(SEDANG)return {terkirim:0,galat:'sibuk'};SEDANG=true;let n=0,galat='';
+ try{const token=await cfgAmbil('token');const L=(await antriSemua()).sort((a,b)=>String(a.dibuat).localeCompare(String(b.dibuat)));
+  if(!L.length)return {terkirim:0,galat:''};if(!token)return {terkirim:0,galat:'login'};
+  let base=await cariBase(false);
+  for(const it of L){let r=await kirimSatu(base,token,it);
+   if(r==='net'){const b2=await cariBase(true);if(b2&&b2!==base){base=b2;r=await kirimSatu(base,token,it)}}
+   if(r==='ok'){await antriHapus(it.uid);await tandaiRiw(it.uid,'ok');n++}
+   else if(r==='login'){galat='login';await cfgSimpan('token',null);break}
+   else if(r==='net'){galat='net';break}
+   else{it.galat=r;await antriTambah(it);await tandaiRiw(it.uid,'galat');galat=r}}
+ }catch(e){galat='net'}finally{SEDANG=false}
+ return {terkirim:n,galat}}
+
+const FOTO=[['meter','📟','Foto kWh meter gangguan','wajib'],['kabel','🧵','Foto penggunaan kabel SR','wajib'],['ba','📄','Foto berita acara sambung langsung','wajib bila sambung langsung']];
+const $=i=>document.getElementById(i),S={jenis:'',sl:false,gps:null,foto:{}};
+const z=n=>String(n).padStart(2,'0'),isoLokal=d=>`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}:${z(d.getSeconds())}`;
+const waktuTeks=(d=new Date())=>`${z(d.getDate())}-${z(d.getMonth()+1)}-${d.getFullYear()} ${z(d.getHours())}:${z(d.getMinutes())}`;
+const simpanLS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},ambilLS=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+if(CFG.repo)cfgSimpan('repo',CFG.repo);
+['unit','petugas'].forEach(k=>{$(k).value=ambilLS('sr_'+k)||(k=='unit'?(document.querySelector('#dUnit option')||{}).value||'':'');$(k).addEventListener('change',()=>simpanLS('sr_'+k,$(k).value.trim()))});
+document.querySelectorAll('#jenis button').forEach(b=>b.onclick=()=>{S.jenis=b.textContent;document.querySelectorAll('#jenis button').forEach(x=>x.classList.toggle('on',x==b))});
+document.querySelectorAll('#sl button').forEach(b=>b.onclick=()=>{S.sl=b.dataset.v=='1';document.querySelectorAll('#sl button').forEach(x=>x.classList.toggle('on',x==b));gambarFoto()});
+function ubahKabel(n){$('kabel').value=Math.max(0,(parseFloat($('kabel').value)||0)+n)}
+function gambarFoto(){$('fotos').innerHTML=FOTO.filter(f=>f[0]!='ba'||S.sl).map(([k,ik,l,w])=>{const d=S.foto[k];
+ return `<div class="ft${d?' isi':''}">${d?`<img src="${d}">`:`<div class="ik">${ik}</div>`}<div><b>${l}</b><small class="${d?'':'wj'}">${d?'✓ tersimpan • ketuk untuk ganti':'📷 ketuk untuk ambil foto • '+w}</small></div>
+ <input type="file" accept="image/*" capture="environment" onchange="ambilFoto('${k}',this)"></div>`}).join('')}
+function ambilFoto(k,inp){const f=inp.files&&inp.files[0];if(!f)return;const img=new Image(),u=URL.createObjectURL(f);
+ img.onload=()=>{const mx=1600,r=Math.min(1,mx/Math.max(img.width,img.height)),w=Math.round(img.width*r),h=Math.round(img.height*r),c=document.createElement('canvas');c.width=w;c.height=h;
+  const x=c.getContext('2d');x.drawImage(img,0,0,w,h);/* cap waktu, lokasi & IDPEL di foto */
+  const fs=Math.max(16,Math.round(w/42)),baris=[`ULP Woha • ${waktuTeks()} WITA`,(S.gps?`GPS ${S.gps.lat.toFixed(6)}, ${S.gps.lng.toFixed(6)} (±${Math.round(S.gps.acc)} m)`:'GPS belum diambil')+($('idpel').value?` • ${$('idpel').value}`:'')];
+  const tg=fs*1.5*baris.length+fs*.6;x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,h-tg,w,tg);x.fillStyle='#fff';x.font=`600 ${fs}px sans-serif`;
+  baris.forEach((t,i)=>x.fillText(t,fs*.6,h-tg+fs*1.35+i*fs*1.5));
+  S.foto[k]=c.toDataURL('image/jpeg',.72);URL.revokeObjectURL(u);gambarFoto()};
+ img.onerror=()=>{alert('Foto tidak terbaca, coba ambil ulang.')};img.src=u}
+$('bGps').onclick=()=>{if(!navigator.geolocation){$('tGps').textContent='HP tidak mendukung GPS.';return}
+ $('tGps').textContent='Mencari lokasi… pastikan GPS/lokasi HP aktif.';$('bGps').disabled=true;
+ navigator.geolocation.getCurrentPosition(p=>{S.gps={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy};$('bGps').disabled=false;$('bGps').textContent='📍 Perbarui';
+  $('tGps').innerHTML=`<b>✓ ${S.gps.lat.toFixed(6)}, ${S.gps.lng.toFixed(6)}</b><br>akurasi ±${Math.round(S.gps.acc)} m`},
+  e=>{$('bGps').disabled=false;$('tGps').textContent='❌ Lokasi gagal: '+(e.code==1?'izin lokasi ditolak. Izinkan lokasi untuk aplikasi ini di pengaturan HP.':'sinyal GPS lemah, coba di tempat terbuka.')},
+  {enableHighAccuracy:true,timeout:30000,maximumAge:0})};
+function sinyal(){const on=navigator.onLine;$('sinyal').className=on?'on':'off';$('sinyal').textContent=on?'● Online':'● Offline'}
+async function segarkan(){const A=await antriSemua(),r=(await cfgAmbil('riw'))||[];
+ $('kAntri').classList.toggle('ada',A.length>0);$('nAntri').textContent=A.length;
+ $('lAntri').innerHTML=A.map(a=>`<div><b>${a.idpel}</b><span>${a.jenis}</span><span class="tg ${a.galat?'galat':'tunggu'}">${a.galat?'⚠ '+a.galat:waktuTeks(new Date(a.dibuat))}</span></div>`).join('');
+ $('riw').innerHTML=r.length?r.slice(0,15).map(x=>`<div><b>${x.idpel}</b><span>${x.jenis}</span><span class="tg ${x.st=='ok'?'ok':x.st=='galat'?'galat':'tunggu'}">${x.st=='ok'?'✓ terkirim':x.st=='galat'?'⚠ ditolak':'📥 menunggu'} • ${x.waktu.slice(0,5)} ${x.waktu.slice(11)}</span></div>`).join(''):'<span style="color:#6B7280;font-size:13px">Belum ada laporan dari HP ini.</span>'}
+async function sinkron(manual){const h=await kirimAntrian();await segarkan();
+ if(h.galat==='login'){$('lMasuk').style.display='flex';$('psMasuk').textContent='Sesi habis / PIN diganti admin. Masuk lagi; laporan yang tersimpan tetap aman.'}
+ if(manual)$('psAntri').textContent=h.galat==='net'?'❌ Belum ada sinyal / server belum terjangkau. Dicoba lagi otomatis.':h.galat&&h.galat!=='login'&&h.galat!=='sibuk'?'⚠ '+h.galat:h.terkirim?'✅ '+h.terkirim+' laporan terkirim':'';
+ return h}
+function mintaSync(){if('serviceWorker' in navigator)navigator.serviceWorker.ready.then(r=>{if(r.sync)r.sync.register('kirim-lapor').catch(()=>{})}).catch(()=>{})}
+$('bKirimAntri').onclick=()=>{$('psAntri').textContent='Mengirim…';sinkron(true)};
+$('bKirim').onclick=async()=>{const it={uid:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),dibuat:isoLokal(new Date()),
+  unit:$('unit').value.trim(),petugas:$('petugas').value.trim(),idpel:$('idpel').value.trim(),jenis:S.jenis,ket:$('ket').value.trim(),
+  kabel:$('kabel').value||0,sl:S.sl,lat:S.gps&&S.gps.lat,lng:S.gps&&S.gps.lng,akurasi:S.gps&&S.gps.acc,foto:{meter:S.foto.meter,kabel:S.foto.kabel,ba:S.sl?S.foto.ba:null}};
+ const kurang=[];if(!it.unit)kurang.push('kantor unit');if(!it.petugas)kurang.push('nama petugas');if(!it.idpel)kurang.push('IDPEL / No meter');if(!it.jenis)kurang.push('jenis gangguan');
+ if(!it.foto.meter)kurang.push('foto kWh meter');if(!it.foto.kabel)kurang.push('foto kabel SR');if(S.sl&&!it.foto.ba)kurang.push('foto berita acara');
+ if(kurang.length){$('ps').textContent='Belum diisi: '+kurang.join(', ');return}
+ if(!S.gps&&!confirm('Lokasi GPS belum diambil. Tetap kirim tanpa lokasi?'))return;
+ simpanLS('sr_unit',it.unit);simpanLS('sr_petugas',it.petugas);$('bKirim').disabled=true;$('bKirim').textContent='Menyimpan…';
+ try{await antriTambah(it);const r=(await cfgAmbil('riw'))||[];r.unshift({uid:it.uid,idpel:it.idpel,jenis:it.jenis,waktu:waktuTeks(),st:'tunggu'});await cfgSimpan('riw',r.slice(0,50))}
+ catch(e){$('bKirim').disabled=false;$('bKirim').textContent='Kirim laporan';$('ps').textContent='❌ Memori HP penuh, hapus beberapa foto/aplikasi lalu coba lagi.';return}
+ $('bKirim').textContent='Mengirim…';const h=navigator.onLine?await sinkron(false):{terkirim:0,galat:'net'};mintaSync();
+ const ok=((await cfgAmbil('riw'))||[]).find(x=>x.uid==it.uid);const terkirim=ok&&ok.st=='ok';
+ $('bKirim').disabled=false;$('bKirim').textContent='Kirim laporan';
+ $('sIk').textContent=terkirim?'✓':'📥';$('sIk').style.background=terkirim?'var(--hijau)':'var(--oranye)';
+ $('sJ').textContent=terkirim?'Laporan terkirim':'Tersimpan di HP';
+ $('sk').innerHTML=`${it.idpel} • ${it.jenis} • ${waktuTeks()}`+(terkirim?'':'<br><br>Belum ada sinyal. Laporan akan <b>terkirim otomatis</b> saat HP mendapat sinyal (buka aplikasi ini lagi bila belum terkirim).');
+ $('sukses').style.display='flex';segarkan()};
+function baru(){S.foto={};S.jenis='';S.gps=null;S.sl=false;['idpel','ket'].forEach(k=>$(k).value='');$('kabel').value=0;
+ document.querySelectorAll('#jenis button').forEach(x=>x.classList.remove('on'));document.querySelectorAll('#sl button').forEach(x=>x.classList.toggle('on',x.dataset.v=='0'));
+ $('tGps').textContent='Tekan tombol saat berada di lokasi pelanggan.';$('bGps').textContent='📍 Ambil lokasi';$('sukses').style.display='none';gambarFoto();segarkan();window.scrollTo(0,0)}
+$('bMasuk').onclick=async()=>{const pin=$('pin').value.trim();if(!pin){$('psMasuk').textContent='Isi PIN.';return}
+ if(!navigator.onLine){$('psMasuk').textContent='Perlu internet untuk masuk pertama kali.';return}
+ $('bMasuk').disabled=true;$('psMasuk').textContent='Memeriksa…';
+ try{const b=await cariBase(diGithub());if(!b)throw 0;const r=await fetch(b+'/api/lapor/masuk',{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1'},body:JSON.stringify({pin})});
+  const j=await r.json().catch(()=>({}));if(!j.ok){$('psMasuk').textContent='❌ '+(j.pesan||'PIN salah');$('bMasuk').disabled=false;return}
+  await cfgSimpan('token',j.token);$('lMasuk').style.display='none';$('pin').value='';$('psMasuk').textContent='';$('bMasuk').disabled=false;sinkron(false)}
+ catch(e){$('psMasuk').textContent='❌ Server belum terjangkau (komputer bot mati / tidak ada sinyal). Coba lagi.';$('bMasuk').disabled=false}};
+$('pin').addEventListener('keydown',e=>{if(e.key=='Enter')$('bMasuk').click()});
+$('bKeluar').onclick=async()=>{const A=await antriSemua();if(A.length&&!confirm(A.length+' laporan belum terkirim tetap disimpan di HP ini. Keluar?'))return;if(!A.length&&!confirm('Keluar dari aplikasi?'))return;await cfgSimpan('token',null);$('lMasuk').style.display='flex'};
+document.querySelector('main').addEventListener('input',()=>{$('ps').textContent=''});document.querySelector('main').addEventListener('click',()=>{$('ps').textContent=''});
+window.addEventListener('online',()=>{sinyal();sinkron(false)});window.addEventListener('offline',sinyal);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&navigator.onLine)sinkron(false)});
+setInterval(()=>{antriSemua().then(A=>{if(A.length&&navigator.onLine)sinkron(false)})},60000);
+let ip=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();ip=e;$('pasang').style.display='block'});
+$('pasang').onclick=()=>{if(ip){ip.prompt();ip=null;$('pasang').style.display='none'}};
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.tipe=='antrian')segarkan()})}
+gambarFoto();sinyal();segarkan();cfgAmbil('token').then(t=>{if(!t)$('lMasuk').style.display='flex';else if(navigator.onLine)sinkron(false)});
+</script></body></html>
