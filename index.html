@@ -7,10 +7,11 @@ width:min(380px,90vw);text-align:center;border-top:6px solid #F2B134;box-shadow:
 h1{color:#142F4E;font-size:19px;margin:0 0 8px}p{color:#6B7280;font-size:13px}a{display:inline-block;margin-top:8px;
 padding:11px 18px;background:#142F4E;color:#fff;border-radius:10px;text-decoration:none;font-weight:700}</style></head>
 <body><div class="k"><h1>Dashboard Transaksi Energi ULP Woha</h1><p id="s">Membuka dashboard…</p>
-<a id="a" href="https://talked-shorts-valid-describing.trycloudflare.com">Buka dashboard</a><p style="font-size:11px">Link diperbarui: 12-11-2026 20:55</p></div>
+<a id="a" href="https://mortgages-baby-spectacular-albert.trycloudflare.com">Buka dashboard</a><p style="font-size:11px">Link diperbarui: 12-11-2026 21:17</p></div>
 <script>
-var cad="https://talked-shorts-valid-describing.trycloudflare.com";
-function pergi(u){document.getElementById('a').href=u;location.replace(u)}
+var cad="https://mortgages-baby-spectacular-albert.trycloudflare.com";
+if(/lapor/.test(location.search+location.hash))location.replace('lapor/');
+function pergi(u){if(/lapor/.test(location.search+location.hash))return;document.getElementById('a').href=u;location.replace(u)}
 // ambil link terbaru langsung dari GitHub (halaman ini bisa tersimpan di cache beberapa menit)
 fetch("https://api.github.com/repos/dashboardteulpwoha/dashboardteulpwoha.github.io/contents/link.json?t="+Date.now(),{cache:"no-store"})
  .then(function(r){return r.json()}).then(function(j){var d=JSON.parse(atob(j.content.replace(/\s/g,"")));pergi(d.url||cad)})
