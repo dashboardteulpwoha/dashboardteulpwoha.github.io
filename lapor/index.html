@@ -56,7 +56,7 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
 .tk code{display:block;font-size:19px;font-weight:800;letter-spacing:1px;color:#fff;font-family:ui-monospace,Consolas,monospace;word-break:break-all}.tk button{border:0;border-radius:10px;background:var(--emas);color:var(--navy);font-weight:800;padding:10px 12px}
 .inf{font-size:14px;line-height:1.55}.inf div{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid #EEF2F7}.inf div span{width:110px;flex:none;color:var(--abu);font-size:13px}.inf a{color:var(--navy2);font-weight:700}
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.gal img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#E8EEF6}
-.cari2{margin-bottom:10px}
+.cari2{margin-bottom:10px}.minta{width:100%;margin-top:10px;padding:14px;border:0;border-radius:12px;background:var(--navy2);color:#fff;font-weight:800;font-size:15px}.minta:disabled{opacity:.6}
 </style></head><body>
 <header><h1><button id="bKembali">‹</button><span id="judul">⚡ Lapor SR-APP</span></h1><p id="subjudul">ULP Woha • bisa dipakai tanpa sinyal</p><div class="st"><span id="sinyal" class="on">● Online</span><button class="kl" id="bKeluar">Keluar</button></div></header>
 <main>
@@ -97,7 +97,8 @@ input:focus,textarea:focus{outline:0;border-color:var(--emas)}textarea{resize:ve
   <label>Hasil tindak lanjut</label><div class="yt" id="hasil"><button type="button" data-v="ganti">🔁 Ganti meter</button><button type="button" data-v="perbaikan">🔧 Perbaikan saja</button></div>
   <label>Nama PT vendor</label><input id="vendor" list="dVendor" placeholder="pilih / ketik nama PT"><datalist id="dVendor"></datalist>
   <label>Nama petugas vendor</label><input id="ptgv" placeholder="nama lengkap">
-  <div id="wMeter"><label>Nomor meter baru</label><input id="meterBaru" inputmode="numeric" maxlength="25" placeholder="nomor meter yang dipasang"></div>
+  <div id="wMeter"><label>Nomor meter baru</label><input id="meterBaru" inputmode="numeric" maxlength="25" placeholder="nomor meter yang dipasang">
+   <button type="button" class="minta" id="bMinta">Minta token prepaid</button><div id="psMinta" class="ps" style="color:var(--navy2)"></div></div>
   <label>Foto eviden setelah tindak lanjut</label><div class="fotos" id="fotoTL"></div>
   <label>Lokasi GPS</label><div class="gps"><button type="button" id="bGpsTL">📍 Ambil lokasi</button><div id="tGpsTL">opsional</div></div>
   <label>Keterangan</label><textarea id="ketTL" maxlength="500" placeholder="mis. meter lama rusak terbakar, sudah diganti & token dimasukkan"></textarea>
@@ -127,7 +128,7 @@ async function cariBase(paksa){/* alamat server bot terbaru */
   if(url){url=url.replace(/\/+$/,'');await cfgSimpan('base',url);return url}}catch(e){}
  const b=await cfgAmbil('base');return b||(diGithub()?null:self.location.origin)}
 async function kirimSatu(base,token,it){if(!base)return 'net';
- try{const r=await fetch(base+(it.tipe==='tl'?'/api/lapor/tl':'/api/lapor'),{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':token},body:JSON.stringify(it)});
+ try{const r=await fetch(base+({tl:'/api/lapor/tl',minta:'/api/lapor/minta_token'}[it.tipe]||'/api/lapor'),{method:'POST',headers:{'Content-Type':'application/json','X-Lapor':'1','X-Token':token},body:JSON.stringify(it)});
   if(r.status==401)return 'login';const j=await r.json().catch(()=>({}));if(r.ok&&j.ok)return 'ok';if(r.status>=500||r.status==429)return 'net';return j.pesan||('ditolak server ('+r.status+')')}catch(e){return 'net'}}
 async function tandaiRiw(uid,st){const r=(await cfgAmbil('riw'))||[];const x=r.find(a=>a.uid==uid);if(x){x.st=st;await cfgSimpan('riw',r)}}
 let SEDANG=false;
@@ -213,7 +214,7 @@ async function segarkan(){const A=await antriSemua(),r=(await cfgAmbil('riw'))||
  const nb=(D.belum||[]).length;
  $('nBelum').style.display=nb?'inline-block':'none';$('nBelum').textContent=nb;
  $('kAntri').classList.toggle('ada',A.length>0);$('nAntri').textContent=A.length;
- $('lAntri').innerHTML=A.map(a=>`<div><b>${a.tipe=='tl'?'✅ TL ':''}${esc(a.idpel||'')}</b><span>${esc(a.tipe=='tl'?(a.hasil=='ganti'?'Ganti meter':'Perbaikan'):a.jenis)}</span><span class="tg ${a.galat?'galat':'tunggu'}">${a.galat?'⚠ '+esc(a.galat):waktuTeks(new Date(a.dibuat))}</span></div>`).join('');
+ $('lAntri').innerHTML=A.map(a=>`<div><b>${a.tipe=='tl'?'✅ TL ':a.tipe=='minta'?'📨 ':''}${esc(a.idpel||'')}</b><span>${esc(a.tipe=='tl'?(a.hasil=='ganti'?'Ganti meter':'Perbaikan'):a.tipe=='minta'?'Minta token '+a.meter_baru:a.jenis)}</span><span class="tg ${a.galat?'galat':'tunggu'}">${a.galat?'⚠ '+esc(a.galat):waktuTeks(new Date(a.dibuat))}</span></div>`).join('');
  $('riw').innerHTML=r.length?r.slice(0,15).map(x=>`<div><b>${x.tl?'✅ ':''}${esc(x.idpel)}</b><span>${esc(x.jenis)}</span><span class="tg ${x.st=='ok'?'ok':x.st=='galat'?'galat':'tunggu'}">${x.st=='ok'?'✓ terkirim':x.st=='galat'?'⚠ ditolak':'📥 menunggu'} • ${x.waktu.slice(0,5)} ${x.waktu.slice(11)}</span></div>`).join(''):'<span style="color:#6B7280;font-size:13px">Belum ada laporan dari HP ini.</span>'}
 async function sinkron(manual){const h=await kirimAntrian();await segarkan();
  if(h.galat==='login'){$('lMasuk').style.display='flex';$('psMasuk').textContent='Sesi habis / PIN diganti admin. Masuk lagi; laporan yang tersimpan tetap aman.'}
@@ -261,12 +262,19 @@ async function gambarDaftar(){const A=await antriSemua(),tunggu=new Set(A.filter
  const q=$('cariD').value.toLowerCase(),L=(TAB=='belum'?DAF.belum:DAF.selesai).filter(x=>!q||[x.idpel,(x.plg||{}).nama,(x.plg||{}).alamat,x.jenis,(x.plg||{}).nometer].join(' ').toLowerCase().includes(q));
  $('lDaftar').innerHTML=L.length?L.map(x=>{const p=x.plg||{},u=fotoUrl(x.id,'meter');return `<div class="it" onclick="bukaTL('${x.id}')">${u?`<img src="${u}" loading="lazy" onerror="this.outerHTML='<div class=ph>⚡</div>'">`:'<div class="ph">⚡</div>'}
   <div><b>${esc(p.nama||x.idpel)}</b><div>${esc(x.idpel)}${p.nometer&&p.nometer!=x.idpel?' • meter '+esc(p.nometer):''}</div><div class="al">${esc(p.alamat||x.unit)}</div>
-  <div class="tgs"><span class="tg galat">${esc(x.jenis)}</span><span class="tg biru">${wIso(x.waktu)}</span>${x.sl?'<span class="tg galat">🔌 SL</span>':''}${(x.token||[]).length?'<span class="tg ok">🔑 token ada</span>':''}${tunggu.has(x.id)?'<span class="tg tunggu">📥 TL menunggu kirim</span>':''}${x.tl?`<span class="tg ok">✅ ${esc(x.tl.vendor)}</span>`:''}${x.tunggu_token?'<span class="tg galat">🔑 menunggu token</span>':''}</div></div></div>`}).join(''):`<div class="kt" style="text-align:center;color:#6B7280">${TAB=='belum'?'🎉 Tidak ada gangguan yang menunggu tindak lanjut / token.':'Belum ada tindak lanjut selesai 14 hari terakhir.'}</div>`}
+  <div class="tgs"><span class="tg galat">${esc(x.jenis)}</span><span class="tg biru">${wIso(x.waktu)}</span>${x.sl?'<span class="tg galat">🔌 SL</span>':''}${(x.token||[]).length&&!(x.dok||{}).token?'<span class="tg ok">🔑 token ada</span>':''}${tunggu.has(x.id)?'<span class="tg tunggu">📥 TL menunggu kirim</span>':''}${x.tl?`<span class="tg ok">✅ ${esc(x.tl.vendor)}</span>`:''}${x.tunggu_token?'<span class="tg galat">🔑 menunggu token</span>':''}${(x.dok||{}).token?'<span class="tg ok">📎 token terbit</span>':x.minta&&!(x.token||[]).length?'<span class="tg biru">📨 token diminta</span>':''}</div></div></div>`}).join(''):`<div class="kt" style="text-align:center;color:#6B7280">${TAB=='belum'?'🎉 Tidak ada gangguan yang menunggu tindak lanjut / token.':'Belum ada tindak lanjut selesai 14 hari terakhir.'}</div>`}
 function salin(t){const ok=()=>{const b=event&&event.target;if(b){const o=b.textContent;b.textContent='✓';setTimeout(()=>b.textContent=o,1200)}};
  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,()=>{});else{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();ok()}}
 function htmlToken(T){if(!T||!T.length)return `<div class="tok"><h3>🔑 Token prepaid</h3><small>Belum ada di file Monitoring Permohonan Token. Token muncul di sini setelah proses ganti meter di AP2T dan file token diimport ke bot. Tekan 🔄 Perbarui di daftar untuk cek ulang.</small></div>`;
  return T.map(t=>`<div class="tok"><h3>🔑 Token prepaid ${esc(t.tgl)}</h3><small>Agenda ${esc(t.no_agenda||'-')} • ${esc(t.status||'')} • meter baru <b style="color:#fff">${esc(t.meter||'-')}</b>${t.krn?' • KRN '+esc(t.krn)+'/'+esc(t.vkrn||''):''}</small>
   ${(t.kode||[]).map(([l,k])=>`<div class="tk"><div><span>${esc(l)}</span><code>${esc(k)}</code></div><button onclick="event.stopPropagation();salin('${esc(k).replace(/\s/g,'')}')">Salin</button></div>`).join('')||'<small>Kode token belum tersedia.</small>'}</div>`).join('')}
+const dokUrl=(id,j)=>DAF&&DAF.base&&TOKEN?`${DAF.base}/dok/${id}/${j}?t=${encodeURIComponent(TOKEN)}`:'';
+function htmlDok(x){const D2=x.dok||{},J=[['token','🔑 Token prepaid'],['pkba','📄 PKBA'],['sisa','⚡ Sisa pulsa kWh']];if(!Object.keys(D2).length)return '';
+ return `<div class="kt" style="border:2px solid #B7DFBB"><h2>📎 Dokumen dari ULP</h2>${J.filter(([j])=>D2[j]).map(([j,l])=>{const u=dokUrl(x.id,j),d=D2[j];
+  return `<div class="tk" style="background:#F2FAF3;color:#1E2A3A"><div><span style="color:#2E7D32">${l}</span><div style="font-size:12px;color:#6B7280">${esc(d.nama)} • ${wIso(d.waktu)}</div>
+   ${d.ext!='pdf'&&u&&navigator.onLine?`<img src="${u}" style="width:100%;border-radius:10px;margin-top:6px" onclick="window.open(this.src)" onerror="this.remove()">`:''}</div>
+   ${u?`<button onclick="window.open('${u}','_blank')">${d.ext=='pdf'?'Buka PDF':'Buka'}</button>`:''}</div>`}).join('')}
+  ${navigator.onLine?'':'<div style="font-size:12px;color:#6B7280;margin-top:6px">📴 Dokumen bisa dibuka saat ada sinyal.</div>'}</div>`}
 async function bukaTL(id){const x=[...DAF.belum,...DAF.selesai].find(a=>a.id==id);if(!x)return;TL=x;TLS={hasil:'',foto:null,gps:null};
  const p=x.plg||{},lat=x.lat??p.lat,lng=x.lng??p.lng,A=await antriSemua(),tunggu=A.some(a=>a.tipe=='tl'&&a.id==id);
  $('dTL').innerHTML=`<div class="kt"><h2>👤 ${esc(p.nama||x.idpel)}</h2><div class="inf">
@@ -278,19 +286,35 @@ async function bukaTL(id){const x=[...DAF.belum,...DAF.selesai].find(a=>a.id==id
   <div><span>Dilaporkan</span>${wIso(x.waktu)} • ${esc(x.petugas)} (${esc(x.unit)})</div>
   ${lat!=null?`<div><span>Lokasi</span><a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">🧭 Navigasi ke lokasi ›</a></div>`:''}</div>
   ${navigator.onLine&&fotoUrl(x.id,'meter')?`<div class="gal">${(x.foto||[]).map(j=>`<img src="${fotoUrl(x.id,j)}" onclick="window.open(this.src)" onerror="this.remove()">`).join('')}</div>`:''}</div>
-  <div class="kt" style="padding:4px 12px 12px">${htmlToken(x.token)}</div>
-  ${x.tunggu_token?'<div class="kt" style="background:#FDECEA;color:#8B1A1A;font-size:14px"><b>🔑 Menunggu token prepaid.</b> Meter sudah diganti, tetapi token belum terbit di Monitoring Permohonan Token. Pelanggan ini tetap di daftar <b>Belum selesai</b> sampai token muncul — cek lagi lewat 🔄 Perbarui, lalu masukkan token ke meter.</div>':''}
+  ${htmlDok(x)}
+  ${(x.dok||{}).token&&!(x.token||[]).length?'':`<div class="kt" style="padding:4px 12px 12px">${htmlToken(x.token)}</div>`}
+  ${x.tunggu_token?`<div class="kt" style="background:#FDECEA;color:#8B1A1A;font-size:14px"><b>🔑 Menunggu token prepaid.</b> Meter sudah diganti, tetapi token belum terbit di Monitoring Permohonan Token. Pelanggan ini tetap di daftar <b>Belum selesai</b> sampai token muncul — cek lagi lewat 🔄 Perbarui, lalu masukkan token ke meter.
+   ${x.minta?`<div style="margin-top:6px">📨 Token sudah diminta ${wIso(x.minta.waktu)}${x.minta.ke>1?' ('+x.minta.ke+'x)':''} oleh ${esc(x.minta.petugas)}</div>`:''}
+   <button type="button" class="minta" id="bMinta2">Minta token prepaid</button><div id="psMinta2" class="ps" style="color:var(--navy2)"></div></div>`:''}
   ${x.tl?`<div class="kt"><h2>✅ Sudah ditindaklanjuti</h2><div class="inf"><div><span>Hasil</span><b>${x.tl.hasil=='ganti'?'Ganti meter':'Perbaikan tanpa ganti meter'}</b></div><div><span>PT vendor</span>${esc(x.tl.vendor)}</div><div><span>Petugas</span>${esc(x.tl.petugas)}</div>${x.tl.meter_baru?`<div><span>Meter baru</span><b>${esc(x.tl.meter_baru)}</b></div>`:''}<div><span>Waktu</span>${wIso(x.tl.waktu)}</div>${x.tl.ket?`<div><span>Keterangan</span>${esc(x.tl.ket)}</div>`:''}</div>${navigator.onLine&&fotoUrl(x.id,'tl')?`<div class="gal"><img src="${fotoUrl(x.id,'tl')}" onclick="window.open(this.src)" onerror="this.remove()"></div>`:''}</div>`
   :tunggu?'<div class="kt" style="background:#FFF3E0">📥 Tindak lanjut sudah diisi dan menunggu dikirim (belum ada sinyal).</div>':''}`;
  $('fTL').style.display=x.tl||tunggu?'none':'block';
  $('vendor').value=ambilLS('sr_vendor')||'';$('ptgv').value=ambilLS('sr_ptgv')||'';$('meterBaru').value='';$('ketTL').value='';$('tGpsTL').textContent='opsional';$('bGpsTL').textContent='📍 Ambil lokasi';$('psTL').textContent='';
  $('dVendor').innerHTML=(DAF.vendor||[]).map(v=>`<option value="${esc(v)}">`).join('');
  document.querySelectorAll('#hasil button').forEach(b=>b.classList.remove('on'));$('wMeter').style.display='block';gambarFotoTL();
+ $('psMinta').textContent=x.minta&&!(x.token||[]).length&&!(x.dok||{}).token?`📨 Token sudah diminta ${wIso(x.minta.waktu)} untuk meter ${x.minta.meter}`:'';$('bMinta').textContent='Minta token prepaid';
+ if(x.minta&&!$('meterBaru').value)$('meterBaru').value=x.minta.meter;
+ const b2=$('bMinta2');if(b2)b2.onclick=()=>kirimMinta((x.tl||{}).meter_baru||(x.minta||{}).meter||'',b2,$('psMinta2'));
  buka('vTL');$('barTL').classList.toggle('aktif',!(x.tl||tunggu))}
 document.querySelectorAll('#hasil button').forEach(b=>b.onclick=()=>{TLS.hasil=b.dataset.v;document.querySelectorAll('#hasil button').forEach(x=>x.classList.toggle('on',x==b));$('wMeter').style.display=TLS.hasil=='perbaikan'?'none':'block'});
 function gambarFotoTL(){$('fotoTL').innerHTML=kotakFoto('tl','📸','Foto eviden setelah ganti meter / perbaikan','wajib',TLS.foto,'ambilFotoTL')}
 async function ambilFotoTL(k,inp){const f=inp.files&&inp.files[0];if(!f)return;
  try{TLS.foto=await kompres(f,[`TL ULP Woha • ${waktuTeks()} WITA • ${TL?TL.idpel:''}`,gpsTeks(TLS.gps)+($('meterBaru').value?` • meter baru ${$('meterBaru').value}`:'')]);gambarFotoTL()}catch(e){alert('Foto tidak terbaca, coba ambil ulang.')}}
+async function kirimMinta(meter,btn,ps){if(!TL)return;const it={tipe:'minta',uid:uidBaru(),id:TL.id,idpel:TL.idpel,dibuat:isoLokal(new Date()),meter_baru:meter,
+  vendor:($('vendor').value||ambilLS('sr_vendor')||(TL.tl||{}).vendor||'').trim(),petugas:($('ptgv').value||ambilLS('sr_ptgv')||(TL.tl||{}).petugas||'').trim()};
+ const k=[];if(!/^[0-9A-Za-z]{6,}$/.test(meter))k.push('nomor meter baru');if(!it.vendor)k.push('nama PT vendor');if(!it.petugas)k.push('nama petugas vendor');
+ if(k.length){ps.style.color='var(--merah)';ps.textContent='Isi dulu: '+k.join(', ');return}
+ simpanLS('sr_vendor',it.vendor);simpanLS('sr_ptgv',it.petugas);const t0=btn.textContent;
+ const ok=await simpanKirim(it,'Minta token '+meter,btn,t0);if(ok===null){ps.style.color='var(--merah)';ps.textContent='❌ Memori HP penuh.';return}
+ TL.minta={waktu:isoLokal(new Date()),meter,vendor:it.vendor,petugas:it.petugas};
+ ps.style.color=ok?'var(--hijau)':'var(--oranye)';ps.innerHTML=ok?'✅ Permintaan token terkirim ke admin ULP. Token muncul di halaman ini setelah diproses — tekan 🔄 Perbarui di daftar untuk cek.':'📥 Permintaan tersimpan di HP, terkirim otomatis saat ada sinyal.';
+ btn.textContent='Minta token prepaid'}
+$('bMinta').onclick=()=>kirimMinta($('meterBaru').value.trim(),$('bMinta'),$('psMinta'));
 $('bGpsTL').onclick=()=>ambilGps(g=>{TLS.gps=g},$('tGpsTL'),$('bGpsTL'));
 $('bKirimTL').onclick=async()=>{if(!TL)return;const it={tipe:'tl',uid:uidBaru(),id:TL.id,idpel:TL.idpel,dibuat:isoLokal(new Date()),hasil:TLS.hasil,vendor:$('vendor').value.trim(),
   petugas:$('ptgv').value.trim(),meter_baru:TLS.hasil=='ganti'?$('meterBaru').value.trim():'',ket:$('ketTL').value.trim(),lat:TLS.gps&&TLS.gps.lat,lng:TLS.gps&&TLS.gps.lng,foto:TLS.foto};
