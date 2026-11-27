@@ -1,0 +1,17 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>Monitoring Real P2TL • ULP Woha</title>
+<style>body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:#EEF7FC;display:flex;min-height:100vh;
+align-items:center;justify-content:center}.k{background:#fff;border:1px solid #D3E8F4;border-radius:14px;padding:26px;
+width:min(380px,90vw);text-align:center;border-top:6px solid #FFD100}h1{color:#0071BC;font-size:19px;margin:0 0 8px}
+p{color:#6B7280;font-size:13px}a{display:inline-block;margin-top:8px;padding:11px 18px;background:#0071BC;color:#fff;
+border-radius:10px;text-decoration:none;font-weight:700}</style></head>
+<body><div class="k"><h1>🎯 Monitoring Real P2TL</h1><p id="s">Membuka halaman…</p>
+<a id="a" href="https://proc-controversy-senate-aids.trycloudflare.com/p2tl">Buka</a></div>
+<script>
+function pergi(u){if(!u){document.getElementById('s').textContent='Link sedang tidak aktif (komputer bot mati / sedang restart). Coba lagi beberapa menit lagi.';document.getElementById('a').style.display='none';return}
+ document.getElementById('a').href=u;location.replace(u)}
+fetch("https://api.github.com/repos/dashboardteulpwoha/dashboardteulpwoha.github.io/contents/link.json?t="+Date.now(),{cache:"no-store"})
+ .then(function(r){return r.json()}).then(function(j){var d=JSON.parse(atob(j.content.replace(/\s/g,"")));pergi(d.vendor?d.vendor.replace(/\/$/,"")+"/p2tl":"https://proc-controversy-senate-aids.trycloudflare.com/p2tl")})
+ .catch(function(){pergi("https://proc-controversy-senate-aids.trycloudflare.com/p2tl")});
+</script></body></html>
